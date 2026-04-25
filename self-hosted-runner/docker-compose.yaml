@@ -1,6 +1,6 @@
 services:
   runner-unified-testing:
-    image: ghcr.io/<username>/libp2p-gh-runner:latest
+    image: ghcr.io/sumanjeet0012/libp2p-gh-runner:latest
     restart: unless-stopped
     container_name: ${RUNNER_NAME}-unified-testing
     environment:
