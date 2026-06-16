@@ -59,6 +59,10 @@ iptables -A INPUT -i "$WAN_IF" -j DROP
 # Translate source IP from LAN subnet to WAN IP when forwarding to WAN
 iptables -t nat -A POSTROUTING -s "$LAN_SUBNET" -o "$WAN_IF" -j MASQUERADE
 
+# Fix TCP/UDP checksums for packets going through veth interfaces
+iptables -t mangle -A POSTROUTING -p tcp -j CHECKSUM --checksum-fill
+iptables -t mangle -A POSTROUTING -p udp -j CHECKSUM --checksum-fill
+
 # Allow established and related connections
 iptables -A FORWARD -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
