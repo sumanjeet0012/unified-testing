@@ -5,7 +5,7 @@
 # Usage: --test-select "~browsers" or --test-ignore "!~browsers"
 test-aliases:
   - alias: "all"
-    value: "~browsers|~rust|~go|~python|~js|~nim|~jvm|~c|~dotnet|~zig|~eth-p2p|~lua"
+    value: "~browsers|~rust|~go|~python|~js|~nim|~jvm|~c|~dotnet|~zig|~eth-p2p|~lua|~haskell"
   - alias: "browsers"
     value: "chromium-rust-v0.53|chromium-rust-v0.54|chromium-rust-v0.56|chromium-js-v1.x|chromium-js-v2.x|firefox-js-v1.x|firefox-js-v2.x|webkit-js-v1.x|webkit-js-v2.x"
   - alias: "rust-browsers"
@@ -22,6 +22,8 @@ test-aliases:
     value: "js-v1.x|js-v2.x|js-v3.x"
   - alias: "nim"
     value: "nim-v2.2.0"
+  - alias: "haskell"
+    value: "haskell-v0.1"
   - alias: "jvm"
     value: "jvm-v1.2"
   - alias: "c"
@@ -263,6 +265,17 @@ implementations:
     transports: [tcp, ws, quic-v1]
     secureChannels: [noise]
     muxers: [mplex, yamux]
+
+  # Haskell implementation
+  - id: haskell-v0.1
+    source:
+      type: github
+      repo: adust09/libp2p-hs
+      commit: 87b4b0b7a01cddefa294a651dc98a872a21bf66f
+      dockerfile: Dockerfile
+    transports: [tcp]
+    secureChannels: [noise]
+    muxers: [yamux]
 
   # JVM implementation
   - id: jvm-v1.2
