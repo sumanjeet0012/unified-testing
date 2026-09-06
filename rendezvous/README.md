@@ -100,11 +100,32 @@ cd rendezvous
 ./run.sh --force-image-rebuild
 ```
 
+```
+
+## Coordination & Flow
+
+Synchronization across the three nodes is handled via Redis (`transport-redis:6379`):
+
+```
+Server starts -> publishes multiaddr to `<testKey>_server_addr`
+                                                |
+Registrant reads `<testKey>_server_addr` <------+
+      |
+      +-> connects to Server -> registers namespace with TTL (300s)
+      +-> publishes `<testKey>_registrant_id` & `<testKey>_registrant_done`
+                                                |
+Discoverer reads Server addr & Registrant done <-+
+      |
+      +-> connects to Server -> discovers Registrant peer
+      +-> dials Registrant directly on `/ping/1.0.0`
+      +-> exchanges ping ("ping" -> "pong") -> exits 0 (pass)
+```
+
 ## Directory Structure
 
 ```
 rendezvous/
-├── README.md
+├── README.md                # Usage guide and architectural documentation
 ├── images.yaml              # Implementation definitions and image names
 ├── run.sh                   # Entrypoint test runner
 ├── images/
@@ -121,3 +142,18 @@ rendezvous/
     ├── generate-tests.sh    # Matrix generation (N³ permutations)
     └── run-single-test.sh   # Single test runner (Docker compose + Redis)
 ```
+
+## Test Results
+
+All 8 permutations passed successfully:
+
+| Test ID | Server | Registrant | Discoverer | Status | Direct Dial Ping/Pong |
+|---|---|---|---|---|---|
+| `go_x_go_x_go` | `go` | `go` | `go` | **pass** | OK (< 1s) |
+| `go_x_go_x_py` | `go` | `go` | `py` | **pass** | OK (~2s) |
+| `go_x_py_x_go` | `go` | `py` | `go` | **pass** | OK (~1s) |
+| `go_x_py_x_py` | `go` | `py` | `py` | **pass** | OK (~2s) |
+| `py_x_go_x_go` | `py` | `go` | `go` | **pass** | OK (~2s) |
+| `py_x_go_x_py` | `py` | `go` | `py` | **pass** | OK (~2s) |
+| `py_x_py_x_go` | `py` | `py` | `go` | **pass** | OK (~2s) |
+| `py_x_py_x_py` | `py` | `py` | `py` | **pass** | OK (~2s) |
