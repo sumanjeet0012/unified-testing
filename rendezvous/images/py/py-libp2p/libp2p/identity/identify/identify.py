@@ -1,0 +1,214 @@
+import logging
+import traceback
+
+from multiaddr import (
+    Multiaddr,
+)
+import trio
+
+from libp2p.abc import (
+    IHost,
+    INetStream,
+)
+from libp2p.custom_types import (
+    StreamHandlerFn,
+    TProtocol,
+)
+from libp2p.network.stream.exceptions import (
+    StreamClosed,
+    StreamReset,
+)
+from libp2p.peer.peerstore import env_to_send_in_RPC
+from libp2p.stream_muxer.exceptions import MuxedStreamError
+from libp2p.utils import (
+    decode_varint_with_size,
+    get_agent_version,
+    varint,
+)
+
+from .pb.identify_pb2 import (
+    Identify,
+)
+
+logger = logging.getLogger(__name__)
+
+ID = TProtocol("/ipfs/id/1.0.0")
+PROTOCOL_VERSION = "ipfs/0.1.0"
+AGENT_VERSION = get_agent_version()
+
+
+def _strip_p2p_suffix(maddr: Multiaddr) -> Multiaddr:
+    """
+    Strip /p2p/{peer_id} suffix from a multiaddr if present.
+
+    The Identify spec requires listenAddrs to be plain multiaddresses
+    without a /p2p suffix.
+    """
+    try:
+        p2p_value = maddr.value_for_protocol("p2p")
+    except Exception:
+        return maddr
+    return maddr.decapsulate(Multiaddr(f"/p2p/{p2p_value}"))
+
+
+def _multiaddr_to_bytes(maddr: Multiaddr) -> bytes:
+    return _strip_p2p_suffix(maddr).to_bytes()
+
+
+def _remote_address_to_multiaddr(
+    remote_address: tuple[str, int] | None,
+) -> Multiaddr | None:
+    """Convert a (host, port) tuple to a Multiaddr."""
+    if remote_address is None:
+        return None
+
+    host, port = remote_address
+
+    # Handle IPv4-mapped IPv6 addresses (e.g. ::ffff:127.0.0.1)
+    if host.lower().startswith("::ffff:"):
+        host = host[7:]
+
+    # Check if the address is IPv6 (contains ':')
+    if ":" in host:
+        # IPv6 address
+        return Multiaddr(f"/ip6/{host}/tcp/{port}")
+    else:
+        # IPv4 address
+        return Multiaddr(f"/ip4/{host}/tcp/{port}")
+
+
+def _mk_identify_protobuf(
+    host: IHost, observed_multiaddr: Multiaddr | None
+) -> Identify:
+    public_key = host.get_public_key()
+    laddrs = host.get_addrs()
+    if not laddrs:
+        # plain transport addrs, matching go-libp2p
+        laddrs = list(host.get_transport_addrs())
+    protocols = tuple(str(p) for p in host.get_mux().get_protocols() if p is not None)
+
+    # Create a signed peer-record for the remote peer
+    envelope_bytes, _ = env_to_send_in_RPC(host)
+
+    observed_addr = observed_multiaddr.to_bytes() if observed_multiaddr else b""
+    return Identify(
+        protocol_version=PROTOCOL_VERSION,
+        agent_version=AGENT_VERSION,
+        public_key=public_key.serialize(),
+        listen_addrs=[_multiaddr_to_bytes(addr) for addr in laddrs],
+        observed_addr=observed_addr,
+        protocols=protocols,
+        signedPeerRecord=envelope_bytes,
+    )
+
+
+def parse_identify_response(response: bytes) -> Identify:
+    """
+    Parse identify response that could be either:
+    - New format: length-prefixed protobuf (varint + protobuf bytes)
+    - Old format: raw protobuf
+
+    This function provides backward and forward compatibility.
+    """
+    if not response:
+        raise ValueError("Empty identify response")
+
+    # Try new format first: length-prefixed protobuf
+    length, varint_size = decode_varint_with_size(response)
+    if varint_size > 0 and length > 0 and varint_size + length == len(response):
+        protobuf_data = response[varint_size : varint_size + length]
+        try:
+            identify_response = Identify()
+            identify_response.ParseFromString(protobuf_data)
+            if not identify_response.HasField("public_key"):
+                raise ValueError("Identify response missing public_key field")
+            return identify_response
+        except Exception:
+            pass  # Fall through to old format
+
+    # Fall back to old format: raw protobuf
+    try:
+        identify_response = Identify()
+        identify_response.ParseFromString(response)
+        # Validate that the message has at least a public_key
+        if not identify_response.HasField("public_key"):
+            raise ValueError("Identify response missing public_key field")
+        return identify_response
+    except Exception as e:
+        logger.error(
+            "Failed to parse identify response: %s (length=%d, hex=%s)",
+            e,
+            len(response),
+            response.hex(),
+        )
+        raise
+
+
+def identify_handler_for(
+    host: IHost, use_varint_format: bool = True
+) -> StreamHandlerFn:
+    async def handle_identify(stream: INetStream) -> None:
+        # get observed address from ``stream``
+        peer_id = (
+            stream.muxed_conn.peer_id
+        )  # remote peer_id is in class Mplex (mplex.py )
+
+        observed_multiaddr: Multiaddr | None = None
+        # Get the remote address
+        try:
+            remote_address = stream.get_remote_address()
+            # Convert to multiaddr
+            if remote_address:
+                observed_multiaddr = _remote_address_to_multiaddr(remote_address)
+
+        except Exception as e:
+            logger.error("Error getting remote address: %s", e)
+            remote_address = None
+
+        # Under heavy parallel test load, listeners may not yet appear in
+        # get_addrs() when the identify stream opens immediately after connect.
+        deadline = trio.current_time() + 0.5
+        while not host.get_addrs() and trio.current_time() < deadline:
+            await trio.sleep(0.01)
+
+        protobuf = _mk_identify_protobuf(host, observed_multiaddr)
+        response = protobuf.SerializeToString()
+
+        try:
+            if use_varint_format:
+                # Send length-prefixed protobuf message (new format)
+                # Combine length prefix and response into a single write to avoid races
+                length_prefix = varint.encode_uvarint(len(response))
+                full_response = length_prefix + response
+                await stream.write(full_response)
+            else:
+                # Send raw protobuf message (old format for backward compatibility)
+                await stream.write(response)
+            logger.debug("successfully handled request for %s from %s", ID, peer_id)
+        except (StreamClosed, StreamReset):
+            logger.debug("Fail to respond to %s request: stream closed or reset", ID)
+        except MuxedStreamError:
+            logger.debug("Fail to respond to %s request: muxed stream error", ID)
+            try:
+                await stream.reset()
+            except Exception:
+                pass
+        except Exception as e:
+            logger.error(
+                "Error sending identify response to %s: %s (type: %s)\n%s",
+                peer_id,
+                e,
+                type(e),
+                traceback.format_exc(),
+            )
+            try:
+                await stream.reset()
+            except Exception:
+                pass
+        finally:
+            try:
+                await stream.close()
+            except Exception:
+                pass
+
+    return handle_identify
