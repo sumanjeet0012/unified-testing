@@ -4,8 +4,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential libgmp-dev && rm -rf /var/lib/apt/lists/*
 
-COPY py-libp2p /app/py-libp2p
-RUN pip install --no-cache-dir /app/py-libp2p redis multiaddr
+RUN pip install --no-cache-dir 'libp2p==0.7.0' redis multiaddr
 
 COPY node.py .
 

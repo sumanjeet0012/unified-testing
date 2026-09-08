@@ -5,12 +5,15 @@ import sys
 import redis
 import trio
 from multiaddr import Multiaddr
+from multiaddr.exceptions import ProtocolLookupError
 from libp2p import new_host
 from libp2p.peer.peerinfo import info_from_p2p_addr, PeerInfo
 from libp2p.peer.id import ID as PeerID
 from libp2p.custom_types import TProtocol
 from libp2p.discovery.rendezvous.service import RendezvousService
 from libp2p.discovery.rendezvous.client import RendezvousClient
+import libp2p.discovery.rendezvous.client as _rz_client
+import libp2p.discovery.rendezvous.messages as _rz_messages
 
 logging.basicConfig(
     level=logging.INFO,
@@ -19,6 +22,29 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 PING_PROTO = TProtocol("/ping/1.0.0")
+
+# Interop workaround: py-libp2p 0.7.0 advertises transport addrs with a
+# `/p2p/<peer-id>` suffix, which the old go-libp2p-rendezvous swarm cannot
+# parse/dial ("no good addresses"). Strip the suffix before REGISTER, same
+# as the fix previously carried in the vendored tree.
+_orig_create_register_message = _rz_client.create_register_message
+
+
+def _create_register_message_strip_p2p(namespace, peer_id, addrs, ttl):
+    cleaned = []
+    for addr in addrs:
+        try:
+            p2p_val = addr.value_for_protocol("p2p")
+            if p2p_val:
+                addr = addr.decapsulate(Multiaddr(f"/p2p/{p2p_val}"))
+        except (ProtocolLookupError, Exception):
+            pass
+        cleaned.append(addr)
+    return _orig_create_register_message(namespace, peer_id, cleaned, ttl)
+
+
+_rz_client.create_register_message = _create_register_message_strip_p2p
+_rz_messages.create_register_message = _create_register_message_strip_p2p
 
 def setup_ping_handler(host):
     async def handle_ping(stream):
