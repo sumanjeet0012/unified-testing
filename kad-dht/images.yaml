@@ -1,0 +1,31 @@
+# NOTE: Paths are relative to the kad-dht/ directory. Run via ./run.sh.
+implementations:
+  - id: py
+    imageName: kad-dht-py
+    buildContext: ./images/py
+    dockerfile: Dockerfile
+  - id: dotnet
+    imageName: kad-dht-dotnet
+    buildContext: ./images/dotnet
+    dockerfile: Dockerfile
+    source:
+      type: github
+      repo: NethermindEth/dotnet-libp2p
+      commit: 960726885ca467fd2205bbb0fa4821a34b9e8f31
+      vendorDir: dotnet-libp2p
+      patchPath: images/dotnet
+      patchFile: interop-fix.patch
+  - id: nim
+    imageName: kad-dht-nim
+    source:
+      type: github
+      repo: vacp2p/nim-libp2p
+      commit: 8a7b54e0ff9e10b521dc0b4115d57d2d5a9404cd
+      dockerfile: interop/kad-dht-v2/Dockerfile
+  - id: haskell
+    imageName: kad-dht-haskell
+    source:
+      type: github
+      repo: adust09/libp2p-hs
+      commit: 25cf16e343035134ebb297c0d4189862965b9dc1
+      dockerfile: interop/kad-dht-node/Dockerfile

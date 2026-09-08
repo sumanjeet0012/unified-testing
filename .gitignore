@@ -61,3 +61,5 @@ target/
 
 # environment files containing secrets (e.g. GitHub PATs)
 **/.env
+
+kad-dht/images/dotnet/dotnet-libp2p/

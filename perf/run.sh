@@ -115,6 +115,9 @@ export DOWNLOAD_BYTES=1073741824   # 1GB default
 export ITERATIONS=10
 export DURATION_PER_ITERATION=20   # seconds per iteration for throughput tests
 export LATENCY_ITERATIONS=100      # iterations for latency test
+# Harness kills compose after this many seconds per test (see run-single-test.sh).
+# Set via --timeout or PERF_TEST_TIMEOUT_SECS (default 300).
+export PERF_TEST_TIMEOUT_SECS="${PERF_TEST_TIMEOUT_SECS:-300}"
 
 # Source common libraries
 source "${SCRIPT_LIB_DIR}/lib-github-snapshots.sh"
@@ -169,9 +172,11 @@ Configuration Options:
   --iterations VALUE            Number of iterations per test (default: 10)
   --duration VALUE              Duration per iteration for throughput (default: 20s)
   --latency-iterations VALUE    Iterations for latency test (default: 100)
+  --timeout VALUE               Max seconds per test before harness abort (default: 300)
   --cache-dir VALUE             Cache directory (default: /srv/cache)
 
 Execution Options:
+  --full-matrix-test            Test all dialer x listener combinations (default: self-tests only)
   --snapshot                    Create test pass snapshot after completion
   --export-docker-images        Export Docker images when creating snapshot
   --debug                       Enable debug mode
@@ -212,6 +217,9 @@ Examples:
 
   # Exclude specific baseline
   ${0} --baseline-ignore "https"
+
+  # Slow stacks (e.g. python yamux): 15 minutes per test
+  ${0} --timeout 900 --impl-select python --yes
 
   # Traditional usage (still supported)
   ${0} --upload-bytes 5368709120 --download-bytes 5368709120
@@ -257,9 +265,11 @@ while [ $# -gt 0 ]; do
     --iterations) ITERATIONS="${2}"; shift 2 ;;
     --duration) DURATION_PER_ITERATION="${2}"; shift 2 ;;
     --latency-iterations) LATENCY_ITERATIONS="${2}"; shift 2 ;;
+    --timeout) export PERF_TEST_TIMEOUT_SECS="${2}"; shift 2 ;;
     --cache-dir) CACHE_DIR="${2}"; shift 2 ;;
 
     # Execution options
+    --full-matrix-test) FULL_MATRIX_TEST=true; shift ;;
     --snapshot) CREATE_SNAPSHOT=true; shift ;;
     --export-docker-images) EXPORT_DOCKER_IMAGES=true; shift ;;
     --debug) DEBUG=true; shift ;;
@@ -283,6 +293,8 @@ while [ $# -gt 0 ]; do
   esac
 done
 
+export PERF_TEST_TIMEOUT_SECS="${PERF_TEST_TIMEOUT_SECS:-300}"
+
 # Re-derive paths from (possibly updated) CACHE_DIR
 # --cache-dir may have changed CACHE_DIR after init_common_variables set TEST_RUN_DIR
 export TEST_RUN_DIR="${CACHE_DIR}/test-run"
@@ -305,6 +317,7 @@ export TEST_RUN_KEY=$(compute_test_run_key \
   "${TEST_SELECT}" \
   "${TEST_IGNORE}" \
   "${DEBUG}" \
+  "${FULL_MATRIX_TEST}" \
 )
 export TEST_PASS_NAME="${TEST_TYPE}-${TEST_RUN_KEY}-$(date +%H%M%S-%d-%m-%Y)"
 export TEST_PASS_DIR="${TEST_RUN_DIR}/${TEST_PASS_NAME}"
@@ -479,6 +492,8 @@ print_message "Download Bytes: $(numfmt --to=iec --suffix=B "${DOWNLOAD_BYTES}" 
 print_message "Iterations: ${ITERATIONS}"
 print_message "Duration per Iteration: ${DURATION_PER_ITERATION}s"
 print_message "Latency Iterations: ${LATENCY_ITERATIONS}"
+print_message "Test Timeout: ${PERF_TEST_TIMEOUT_SECS}s"
+print_message "Full Matrix Test: ${FULL_MATRIX_TEST}"
 print_message "Create Snapshot: ${CREATE_SNAPSHOT}"
 print_message "Export Docker Images: ${EXPORT_DOCKER_IMAGES}"
 print_message "Debug: ${DEBUG}"
