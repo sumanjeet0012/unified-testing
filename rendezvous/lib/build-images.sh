@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Build rendezvous Docker images with caching (mirrors kad-dht/lib/build-images.sh)
 
 set -euo pipefail
 
@@ -7,6 +8,54 @@ set -euo pipefail
 if ! type docker_image_exists &>/dev/null; then
   source "${SCRIPT_LIB_DIR}/lib-image-building.sh"
 fi
+
+# Populate vendored github source into a local build context (e.g. go-libp2p-rendezvous/)
+# Uses ${CACHE_DIR}/git-repos for clone caching; only refreshes when commit changes.
+prepare_vendored_github_source() {
+  local build_context="$1"
+  local repo="$2"
+  local commit="$3"
+  local vendor_dir_name="$4"
+  local patch_path="${5:-}"
+  local patch_file="${6:-}"
+  local force_rebuild="${7:-false}"
+
+  local repo_name
+  repo_name=$(basename "${repo}")
+  local vendor_path="${build_context}/${vendor_dir_name}"
+  local commit_marker="${vendor_path}/.rendezvous-source-commit"
+
+  if [ "${force_rebuild}" != "true" ] \
+     && [ -d "${vendor_path}" ] \
+     && [ -f "${commit_marker}" ] \
+     && [ "$(cat "${commit_marker}")" = "${commit}" ]; then
+    print_success "Vendored source ${vendor_dir_name} @ ${commit:0:8} (cached in build context)"
+    return 0
+  fi
+
+  print_message "Preparing vendored source ${vendor_dir_name} @ ${commit:0:8}..."
+
+  local work_dir
+  work_dir=$(clone_github_repo_with_submodules "${repo}" "${commit}" "${CACHE_DIR}") || return 1
+  local cloned_dir="${work_dir}/${repo_name}"
+
+  rm -rf "${vendor_path}"
+  cp -r "${cloned_dir}" "${vendor_path}"
+  # The .git history is not needed inside the docker build context.
+  rm -rf "${vendor_path}/.git"
+  echo "${commit}" > "${commit_marker}"
+
+  if [ -n "${patch_path}" ] && [ "${patch_path}" != "null" ] \
+     && [ -n "${patch_file}" ] && [ "${patch_file}" != "null" ]; then
+    if ! apply_patch_if_specified "${vendor_path}" "${patch_path}" "${patch_file}"; then
+      rm -rf "${work_dir}" "${vendor_path}"
+      return 1
+    fi
+  fi
+
+  rm -rf "${work_dir}"
+  print_success "Vendored source ready: ${vendor_path}"
+}
 
 build_rendezvous_image() {
   local impl_id="$1"
@@ -20,6 +69,24 @@ build_rendezvous_image() {
   if [ "${force_rebuild}" != "true" ] && docker_image_exists "${image_name}"; then
     print_success "${image_name} (already built)"
     return 0
+  fi
+
+  local repo commit vendor_dir patch_path patch_file
+  repo=$(yq eval "${q} | .source.repo // \"\"" "${IMAGES_YAML}")
+  commit=$(yq eval "${q} | .source.commit // \"\"" "${IMAGES_YAML}")
+  vendor_dir=$(yq eval "${q} | .source.vendorDir // \"\"" "${IMAGES_YAML}")
+  patch_path=$(yq eval "${q} | .source.patchPath // \"\"" "${IMAGES_YAML}")
+  patch_file=$(yq eval "${q} | .source.patchFile // \"\"" "${IMAGES_YAML}")
+
+  # github source vendored into the build context (go), or a
+  # plain self-contained build context (py).
+  if [ -n "${repo}" ] && [ "${repo}" != "null" ]; then
+    if [ -z "${vendor_dir}" ] || [ "${vendor_dir}" == "null" ]; then
+      vendor_dir=$(basename "${repo}")
+    fi
+    prepare_vendored_github_source \
+      "${build_context}" "${repo}" "${commit}" "${vendor_dir}" \
+      "${patch_path}" "${patch_file}" "${force_rebuild}" || return 1
   fi
 
   print_message "Building ${image_name} from ${build_context}..."

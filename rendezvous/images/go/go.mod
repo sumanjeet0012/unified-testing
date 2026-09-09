@@ -1,27 +1,29 @@
-module github.com/libp2p/go-libp2p-rendezvous
+module rendezvous-node
 
 go 1.24
 
 require (
-	github.com/gogo/protobuf v1.2.1
-	github.com/ipfs/go-log v0.0.1
 	github.com/libp2p/go-conn-security-multistream v0.1.0
 	github.com/libp2p/go-libp2p-blankhost v0.1.1
 	github.com/libp2p/go-libp2p-core v0.0.1
 	github.com/libp2p/go-libp2p-peerstore v0.1.0
+	github.com/libp2p/go-libp2p-rendezvous v0.0.0
 	github.com/libp2p/go-libp2p-secio v0.1.0
 	github.com/libp2p/go-libp2p-swarm v0.1.0
 	github.com/libp2p/go-libp2p-transport-upgrader v0.1.1
 	github.com/libp2p/go-libp2p-yamux v0.2.0
 	github.com/libp2p/go-stream-muxer-multistream v0.2.0
 	github.com/libp2p/go-tcp-transport v0.1.0
-	github.com/mattn/go-sqlite3 v1.10.0
 	github.com/multiformats/go-multiaddr v0.0.4
 )
 
+replace github.com/libp2p/go-libp2p-rendezvous => ./lib
+
 require (
 	github.com/btcsuite/btcd v0.0.0-20190213025234-306aecffea32 // indirect
+	github.com/gogo/protobuf v1.2.1 // indirect
 	github.com/google/uuid v1.1.1 // indirect
+	github.com/ipfs/go-log v0.0.1 // indirect
 	github.com/jbenet/go-temp-err-catcher v0.0.0-20150120210811-aac704a3f4f2 // indirect
 	github.com/jbenet/goprocess v0.1.3 // indirect
 	github.com/libp2p/go-addr-util v0.0.1 // indirect
@@ -30,7 +32,6 @@ require (
 	github.com/libp2p/go-libp2p-crypto v0.1.0 // indirect
 	github.com/libp2p/go-libp2p-loggables v0.1.0 // indirect
 	github.com/libp2p/go-libp2p-peer v0.2.0 // indirect
-	github.com/libp2p/go-libp2p-testing v0.0.3 // indirect
 	github.com/libp2p/go-maddr-filter v0.0.4 // indirect
 	github.com/libp2p/go-msgio v0.0.2 // indirect
 	github.com/libp2p/go-reuseport v0.0.1 // indirect
@@ -38,6 +39,7 @@ require (
 	github.com/libp2p/go-yamux v1.2.2 // indirect
 	github.com/mattn/go-colorable v0.1.1 // indirect
 	github.com/mattn/go-isatty v0.0.5 // indirect
+	github.com/mattn/go-sqlite3 v1.10.0 // indirect
 	github.com/minio/blake2b-simd v0.0.0-20160723061019-3f5f724cb5b1 // indirect
 	github.com/minio/sha256-simd v0.1.0 // indirect
 	github.com/mr-tron/base58 v1.1.2 // indirect

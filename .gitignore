@@ -63,3 +63,4 @@ target/
 **/.env
 
 kad-dht/images/dotnet/dotnet-libp2p/
+rendezvous/images/go/lib/

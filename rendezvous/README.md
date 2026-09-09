@@ -129,16 +129,16 @@ rendezvous/
 ├── images.yaml              # Implementation definitions and image names
 ├── run.sh                   # Entrypoint test runner
 ├── images/
-│   ├── go/                  # Go implementation (go-libp2p-rendezvous)
-│   │   ├── Dockerfile
-│   │   ├── cmd/node/        # Test node harness (server, registrant, discoverer)
-│   │   └── ...
-│   └── py/                  # Python implementation (py-libp2p)
+│   ├── go/                  # Go harness (main.go + go.mod/go.sum + Dockerfile).
+│   │                        # The go-libp2p-rendezvous library itself is NOT committed:
+│   │                        # it is cloned at build time into images/go/lib/
+│   │                        # (gitignored, see `source` in images.yaml) following
+│   │                        # the kad-dht dotnet vendoring pattern.
+│   └── py/                  # Python implementation (py-libp2p, deps via pip)
 │       ├── Dockerfile
-│       ├── node.py          # Test node harness (server, registrant, discoverer)
-│       └── py-libp2p/       # py-libp2p source tree
+│       └── node.py          # Test node harness (server, registrant, discoverer)
 └── lib/
-    ├── build-images.sh      # Image build helpers
+    ├── build-images.sh      # Image build helpers (incl. github source vendoring)
     ├── generate-tests.sh    # Matrix generation (N³ permutations)
     └── run-single-test.sh   # Single test runner (Docker compose + Redis)
 ```

@@ -4,6 +4,13 @@ implementations:
     imageName: rendezvous-go
     buildContext: ./images/go
     dockerfile: Dockerfile
+    source:
+      type: github
+      repo: libp2p/go-libp2p-rendezvous
+      # Code lives on the `implement-spec` branch: upstream master only keeps
+      # LICENSE (repo archived). This is its HEAD.
+      commit: 737144165c9e82f95f6dada7aa49b6a8de10f2d5
+      vendorDir: lib
   - id: py
     imageName: rendezvous-py
     buildContext: ./images/py
