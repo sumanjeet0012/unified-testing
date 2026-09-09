@@ -24,9 +24,8 @@ logger = logging.getLogger(__name__)
 PING_PROTO = TProtocol("/ping/1.0.0")
 
 # Interop workaround: py-libp2p 0.7.0 advertises transport addrs with a
-# `/p2p/<peer-id>` suffix, which the old go-libp2p-rendezvous swarm cannot
-# parse/dial ("no good addresses"). Strip the suffix before REGISTER, same
-# as the fix previously carried in the vendored tree.
+# `/p2p/<peer-id>` suffix, which strict rendezvous servers reject when
+# dialing back ("no good addresses"). Strip the suffix before REGISTER.
 _orig_create_register_message = _rz_client.create_register_message
 
 

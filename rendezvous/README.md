@@ -16,8 +16,8 @@ The goal is to verify that implementations can interoperate across the full serv
 
 **Current implementations** (see [`images.yaml`](images.yaml)):
 
-- **go** — go-libp2p-rendezvous (`rendezvous-go`)
-- **py** — py-libp2p (`rendezvous-py`)
+- **go** — berty/go-libp2p-rendezvous (`rendezvous-go`, v0.5.1)
+- **py** — py-libp2p (`rendezvous-py`, libp2p==0.7.0)
 
 ## Test Naming
 
@@ -100,8 +100,6 @@ cd rendezvous
 ./run.sh --force-image-rebuild
 ```
 
-```
-
 ## Coordination & Flow
 
 Synchronization across the three nodes is handled via Redis (`transport-redis:6379`):
@@ -138,7 +136,7 @@ rendezvous/
 │       ├── Dockerfile
 │       └── node.py          # Test node harness (server, registrant, discoverer)
 └── lib/
-    ├── build-images.sh      # Image build helpers (incl. github source vendoring)
+    ├── build-images.sh      # Image build helpers
     ├── generate-tests.sh    # Matrix generation (N³ permutations)
     └── run-single-test.sh   # Single test runner (Docker compose + Redis)
 ```
