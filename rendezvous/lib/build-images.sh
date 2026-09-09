@@ -90,7 +90,7 @@ build_rendezvous_image() {
   fi
 
   print_message "Building ${image_name} from ${build_context}..."
-  docker build -t "${image_name}" "${build_context}"
+  docker build -t "${image_name}" "${build_context}" || return 1
   print_success "${image_name} built"
 }
 
