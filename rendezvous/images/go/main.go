@@ -1,95 +1,30 @@
 package main
 
 import (
-	"bufio"
 	"context"
-	"crypto/rand"
+	"errors"
 	"fmt"
 	"io"
 	"net"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 	"time"
 
-	"github.com/libp2p/go-libp2p-core/crypto"
-	"github.com/libp2p/go-libp2p-core/host"
-	"github.com/libp2p/go-libp2p-core/network"
-	"github.com/libp2p/go-libp2p-core/peer"
-	"github.com/libp2p/go-libp2p-core/protocol"
-	bhost "github.com/libp2p/go-libp2p-blankhost"
-	csms "github.com/libp2p/go-conn-security-multistream"
-	pstoremem "github.com/libp2p/go-libp2p-peerstore/pstoremem"
-	rendezvous "github.com/libp2p/go-libp2p-rendezvous"
-	db "github.com/libp2p/go-libp2p-rendezvous/db/sqlite"
-	secio "github.com/libp2p/go-libp2p-secio"
-	swarm "github.com/libp2p/go-libp2p-swarm"
-	tptu "github.com/libp2p/go-libp2p-transport-upgrader"
-	yamux "github.com/libp2p/go-libp2p-yamux"
-	msmux "github.com/libp2p/go-stream-muxer-multistream"
-	tcp "github.com/libp2p/go-tcp-transport"
+	"github.com/libp2p/go-libp2p"
+	"github.com/libp2p/go-libp2p/core/host"
+	"github.com/libp2p/go-libp2p/core/network"
+	"github.com/libp2p/go-libp2p/core/peer"
+	"github.com/libp2p/go-libp2p/core/protocol"
 	ma "github.com/multiformats/go-multiaddr"
+
+	rendezvous "github.com/berty/go-libp2p-rendezvous"
+	db "github.com/berty/go-libp2p-rendezvous/db/sqlite"
+
+	"github.com/redis/go-redis/v9"
 )
 
 const PingProto = protocol.ID("/ping/1.0.0")
-
-// ─── Minimal Redis client (no external dependency) ───────────────────────────
-
-type RedisClient struct{ addr string }
-
-func (c *RedisClient) Set(key, val string) error {
-	conn, err := net.DialTimeout("tcp", c.addr, 5*time.Second)
-	if err != nil {
-		return err
-	}
-	defer conn.Close()
-	cmd := fmt.Sprintf("*3\r\n$3\r\nSET\r\n$%d\r\n%s\r\n$%d\r\n%s\r\n", len(key), key, len(val), val)
-	if _, err := conn.Write([]byte(cmd)); err != nil {
-		return err
-	}
-	r := bufio.NewReader(conn)
-	line, err := r.ReadString('\n')
-	if err != nil {
-		return err
-	}
-	if !strings.HasPrefix(line, "+OK") {
-		return fmt.Errorf("unexpected redis SET response: %s", line)
-	}
-	return nil
-}
-
-func (c *RedisClient) Get(key string) (string, error) {
-	conn, err := net.DialTimeout("tcp", c.addr, 5*time.Second)
-	if err != nil {
-		return "", err
-	}
-	defer conn.Close()
-	cmd := fmt.Sprintf("*2\r\n$3\r\nGET\r\n$%d\r\n%s\r\n", len(key), key)
-	if _, err := conn.Write([]byte(cmd)); err != nil {
-		return "", err
-	}
-	r := bufio.NewReader(conn)
-	line, err := r.ReadString('\n')
-	if err != nil {
-		return "", err
-	}
-	if strings.HasPrefix(line, "$-1") {
-		return "", nil // key not found
-	}
-	if strings.HasPrefix(line, "$") {
-		var length int
-		if _, err := fmt.Sscanf(line, "$%d", &length); err != nil {
-			return "", err
-		}
-		buf := make([]byte, length)
-		if _, err := io.ReadFull(r, buf); err != nil {
-			return "", err
-		}
-		return string(buf), nil
-	}
-	return "", fmt.Errorf("unexpected redis GET response: %s", line)
-}
 
 // ─── libp2p host helpers ──────────────────────────────────────────────────────
 
@@ -102,48 +37,14 @@ func getContainerIP(redisAddr string) string {
 	return conn.LocalAddr().(*net.UDPAddr).IP.String()
 }
 
-func makeHost(ctx context.Context, ip string, port int) (host.Host, error) {
-	priv, pub, err := crypto.GenerateKeyPairWithReader(crypto.RSA, 2048, rand.Reader)
+func makeHost(ip string) (host.Host, error) {
+	listenAddr, _ := ma.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/0", ip))
+	h, err := libp2p.New(
+		libp2p.ListenAddrs(listenAddr),
+	)
 	if err != nil {
 		return nil, err
 	}
-	pid, err := peer.IDFromPublicKey(pub)
-	if err != nil {
-		return nil, err
-	}
-
-	ps := pstoremem.NewPeerstore()
-	ps.AddPrivKey(pid, priv)
-	ps.AddPubKey(pid, pub)
-
-	sw := swarm.NewSwarm(ctx, pid, ps, nil)
-
-	secMuxer := new(csms.SSMuxer)
-	secMuxer.AddTransport(secio.ID, &secio.Transport{
-		LocalID:    pid,
-		PrivateKey: priv,
-	})
-
-	stMuxer := msmux.NewBlankTransport()
-	stMuxer.AddTransport("/yamux/1.0.0", yamux.DefaultTransport)
-
-	upgrader := &tptu.Upgrader{
-		Secure:  secMuxer,
-		Muxer:   stMuxer,
-		Filters: sw.Filters,
-	}
-
-	tcpT := tcp.NewTCPTransport(upgrader)
-	if err := sw.AddTransport(tcpT); err != nil {
-		return nil, err
-	}
-
-	listenAddr, _ := ma.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/%d", ip, port))
-	if err := sw.Listen(listenAddr); err != nil {
-		return nil, err
-	}
-
-	h := bhost.NewBlankHost(sw)
 
 	// ping responder (used by discoverer to verify reachability)
 	h.SetStreamHandler(PingProto, func(s network.Stream) {
@@ -163,14 +64,14 @@ func makeHost(ctx context.Context, ip string, port int) (host.Host, error) {
 
 func peerMultiaddr(h host.Host) string {
 	for _, a := range h.Addrs() {
-		return fmt.Sprintf("%s/p2p/%s", a.String(), h.ID().Pretty())
+		return fmt.Sprintf("%s/p2p/%s", a.String(), h.ID().String())
 	}
 	return ""
 }
 
 // ─── Roles ───────────────────────────────────────────────────────────────────
 
-func runServer(ctx context.Context, h host.Host, r *RedisClient, testKey string) {
+func runServer(ctx context.Context, h host.Host, r *redis.Client, testKey string) {
 	dbi, err := db.OpenDB(ctx, ":memory:")
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to open sqlite db: %v\n", err)
@@ -181,7 +82,7 @@ func runServer(ctx context.Context, h host.Host, r *RedisClient, testKey string)
 	_ = rendezvous.NewRendezvousService(h, dbi)
 
 	serverKey := fmt.Sprintf("%s_server_addr", testKey)
-	if err := r.Set(serverKey, peerMultiaddr(h)); err != nil {
+	if err := r.Set(ctx, serverKey, peerMultiaddr(h), 0).Err(); err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to write server addr to redis: %v\n", err)
 		os.Exit(1)
 	}
@@ -193,9 +94,9 @@ func runServer(ctx context.Context, h host.Host, r *RedisClient, testKey string)
 	<-sigCh
 }
 
-func runRegistrant(ctx context.Context, h host.Host, r *RedisClient, testKey string) {
+func runRegistrant(ctx context.Context, h host.Host, r *redis.Client, testKey string) {
 	serverKey := fmt.Sprintf("%s_server_addr", testKey)
-	serverAddr := waitForKey(r, serverKey, 60*time.Second)
+	serverAddr := waitForKey(ctx, r, serverKey, 60*time.Second)
 	if serverAddr == "" {
 		fmt.Fprintf(os.Stderr, "Timeout waiting for server address\n")
 		os.Exit(1)
@@ -219,8 +120,8 @@ func runRegistrant(ctx context.Context, h host.Host, r *RedisClient, testKey str
 	}
 	fmt.Printf("Registered in namespace %q with TTL %v\n", ns, grantedTTL)
 
-	_ = r.Set(fmt.Sprintf("%s_registrant_id", testKey), h.ID().Pretty())
-	_ = r.Set(fmt.Sprintf("%s_registrant_done", testKey), "1")
+	_ = r.Set(ctx, fmt.Sprintf("%s_registrant_id", testKey), h.ID().String(), 0).Err()
+	_ = r.Set(ctx, fmt.Sprintf("%s_registrant_done", testKey), "1", 0).Err()
 
 	fmt.Println("Registrant waiting for discoverer...")
 	sigCh := make(chan os.Signal, 1)
@@ -228,7 +129,7 @@ func runRegistrant(ctx context.Context, h host.Host, r *RedisClient, testKey str
 	<-sigCh
 }
 
-func runDiscoverer(ctx context.Context, h host.Host, r *RedisClient, testKey string) {
+func runDiscoverer(ctx context.Context, h host.Host, r *redis.Client, testKey string) {
 	serverKey := fmt.Sprintf("%s_server_addr", testKey)
 	regDoneKey := fmt.Sprintf("%s_registrant_done", testKey)
 
@@ -237,10 +138,10 @@ func runDiscoverer(ctx context.Context, h host.Host, r *RedisClient, testKey str
 	var serverAddr, regDone string
 	for time.Now().Before(deadline) {
 		if serverAddr == "" {
-			serverAddr, _ = r.Get(serverKey)
+			serverAddr, _ = redisGet(ctx, r, serverKey)
 		}
 		if regDone == "" {
-			regDone, _ = r.Get(regDoneKey)
+			regDone, _ = redisGet(ctx, r, regDoneKey)
 		}
 		if serverAddr != "" && regDone != "" {
 			break
@@ -253,7 +154,7 @@ func runDiscoverer(ctx context.Context, h host.Host, r *RedisClient, testKey str
 		os.Exit(1)
 	}
 
-	expectedID, _ := r.Get(fmt.Sprintf("%s_registrant_id", testKey))
+	expectedID, _ := redisGet(ctx, r, fmt.Sprintf("%s_registrant_id", testKey))
 
 	serverInfo := mustAddrInfo(serverAddr)
 	connectCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
@@ -277,7 +178,7 @@ func runDiscoverer(ctx context.Context, h host.Host, r *RedisClient, testKey str
 
 	var target *rendezvous.Registration
 	for i := range regs {
-		if regs[i].Peer.ID.Pretty() == expectedID {
+		if regs[i].Peer.ID.String() == expectedID {
 			target = &regs[i]
 			break
 		}
@@ -329,10 +230,18 @@ func runDiscoverer(ctx context.Context, h host.Host, r *RedisClient, testKey str
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-func waitForKey(r *RedisClient, key string, timeout time.Duration) string {
+func redisGet(ctx context.Context, r *redis.Client, key string) (string, error) {
+	val, err := r.Get(ctx, key).Result()
+	if errors.Is(err, redis.Nil) {
+		return "", nil // key not found
+	}
+	return val, err
+}
+
+func waitForKey(ctx context.Context, r *redis.Client, key string, timeout time.Duration) string {
 	deadline := time.Now().Add(timeout)
 	for time.Now().Before(deadline) {
-		val, _ := r.Get(key)
+		val, _ := redisGet(ctx, r, key)
 		if val != "" {
 			return val
 		}
@@ -367,13 +276,15 @@ func main() {
 		os.Exit(1)
 	}
 
-	r := &RedisClient{addr: redisAddr}
-	containerIP := getContainerIP(redisAddr)
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	h, err := makeHost(ctx, containerIP, 0)
+	r := redis.NewClient(&redis.Options{Addr: redisAddr})
+	defer r.Close()
+
+	containerIP := getContainerIP(redisAddr)
+
+	h, err := makeHost(containerIP)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to create host: %v\n", err)
 		os.Exit(1)

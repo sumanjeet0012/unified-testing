@@ -130,10 +130,10 @@ rendezvous/
 ├── run.sh                   # Entrypoint test runner
 ├── images/
 │   ├── go/                  # Go harness (main.go + go.mod/go.sum + Dockerfile).
-│   │                        # The go-libp2p-rendezvous library itself is NOT committed:
-│   │                        # it is cloned at build time into images/go/lib/
-│   │                        # (gitignored, see `source` in images.yaml) following
-│   │                        # the kad-dht dotnet vendoring pattern.
+│   │                        # Uses the maintained berty/go-libp2p-rendezvous
+│   │                        # fork (v0.5.1) from the Go module proxy: the
+│   │                        # official libp2p/go-libp2p-rendezvous repo is
+│   │                        # archived and not installable as a module.
 │   └── py/                  # Python implementation (py-libp2p, deps via pip)
 │       ├── Dockerfile
 │       └── node.py          # Test node harness (server, registrant, discoverer)

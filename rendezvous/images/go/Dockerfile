@@ -4,10 +4,8 @@ WORKDIR /src
 
 # Copy go.mod/go.sum first so dependency download is cached separately from source
 COPY go.mod go.sum ./
-# Copy the local library module (referenced via replace directive in go.mod)
-COPY lib/ lib/
 
-# Download all external dependencies
+# Download all dependencies from the Go module proxy
 RUN --mount=type=cache,target=/root/go/pkg/mod \
     go mod download
 
