@@ -6,6 +6,10 @@
 test-aliases:
   - alias: "nim"
     value: "nim-v2.2"
+  - alias: "python"
+    value: "py-v0.7.0"
+  - alias: "go"
+    value: "go-v0.34"
   - alias: "failing"
     value: ""
 
@@ -48,3 +52,21 @@ implementations:
     transports: [quic-v1, tcp]
     secureChannels: [noise]
     muxers: [yamux, mplex]
+
+  - id: py-v0.7.0
+    source:
+      type: local
+      path: images/py
+      dockerfile: Dockerfile
+    transports: [tcp]
+    secureChannels: [noise]
+    muxers: [yamux]
+
+  - id: go-v0.34
+    source:
+      type: local
+      path: images/go
+      dockerfile: Dockerfile.peer
+    transports: [tcp]
+    secureChannels: [noise]
+    muxers: [yamux]
