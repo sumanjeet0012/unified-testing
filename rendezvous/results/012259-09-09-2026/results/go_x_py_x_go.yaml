@@ -1,0 +1,10 @@
+test: go_x_py_x_go
+server: go
+registrant: py
+discoverer: go
+status: fail
+duration: 1s
+
+# Output from discoverer
+error: Dial to registrant failed: failed to dial 12D3KooWAsPE2anzkBXmW35VQeC1sd36CBhAS72yLCituXgdyWKv: no good addresses
+status: fail

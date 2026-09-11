@@ -1,0 +1,113 @@
+ Container rz_go_x_go_x_py_server Creating 
+ Container rz_go_x_go_x_py_server Created 
+ Container rz_go_x_go_x_py_registrant Creating 
+ Container rz_go_x_go_x_py_registrant Created 
+ Container rz_go_x_go_x_py_discoverer Creating 
+ Container rz_go_x_go_x_py_discoverer Created 
+Attaching to rz_go_x_go_x_py_discoverer, rz_go_x_go_x_py_registrant, rz_go_x_go_x_py_server
+ Container rz_go_x_go_x_py_server Starting 
+ Container rz_go_x_go_x_py_server Started 
+ Container rz_go_x_go_x_py_registrant Starting 
+ Container rz_go_x_go_x_py_registrant Started 
+ Container rz_go_x_go_x_py_discoverer Starting 
+ Container rz_go_x_go_x_py_discoverer Started 
+rz_go_x_go_x_py_registrant  | Node started in role 'registrant' at /ip4/172.18.0.4/tcp/32947/p2p/QmShUtWbnU9EJi7yUXAvwms5J8iqyuPS7AbY8ASFGLcnCs
+rz_go_x_go_x_py_server      | Node started in role 'server' at /ip4/172.18.0.3/tcp/43017/p2p/QmZXMebn325D27P4ewcdUfpFbsun7TwHfvzZNBsjfwoKmq
+rz_go_x_go_x_py_server      | Rendezvous server waiting indefinitely...
+rz_go_x_go_x_py_discoverer  | 2026-09-06 17:31:19,152 INFO: Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/35225/p2p/12D3KooWBeMTag145Pnf6wRZWcDkJwNNhaXS5PvAbRhbQWtx1t1M
+rz_go_x_go_x_py_registrant  | Registrant registered with TTL 5m0s
+rz_go_x_go_x_py_registrant  | Registrant waiting indefinitely for discoverer...
+rz_go_x_go_x_py_discoverer  | Failed to open stream to peer QmZXMebn325D27P4ewcdUfpFbsun7TwHfvzZNBsjfwoKmq:
+rz_go_x_go_x_py_discoverer  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_go_x_py_discoverer  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_go_x_py_discoverer  |   Timeout: 30s
+rz_go_x_go_x_py_discoverer  |   Connection: Yamux
+rz_go_x_go_x_py_discoverer  |   Connection State: established=True, handshake=False
+rz_go_x_go_x_py_discoverer  |   Registry Stats: None
+rz_go_x_go_x_py_discoverer  | Failed to open stream to peer QmZXMebn325D27P4ewcdUfpFbsun7TwHfvzZNBsjfwoKmq:
+rz_go_x_go_x_py_discoverer  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_go_x_py_discoverer  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_go_x_py_discoverer  |   Timeout: 30s
+rz_go_x_go_x_py_discoverer  |   Connection: Yamux
+rz_go_x_go_x_py_discoverer  |   Connection State: established=True, handshake=False
+rz_go_x_go_x_py_discoverer  |   Registry Stats: None
+rz_go_x_go_x_py_discoverer  | 2026-09-06 17:31:19,921 INFO: Discoverer found 1 peer(s)
+rz_go_x_go_x_py_discoverer  | Failed to open stream to peer QmShUtWbnU9EJi7yUXAvwms5J8iqyuPS7AbY8ASFGLcnCs:
+rz_go_x_go_x_py_discoverer  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_go_x_py_discoverer  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_go_x_py_discoverer  |   Timeout: 30s
+rz_go_x_go_x_py_discoverer  |   Connection: Yamux
+rz_go_x_go_x_py_discoverer  |   Connection State: established=True, handshake=False
+rz_go_x_go_x_py_discoverer  |   Registry Stats: None
+rz_go_x_go_x_py_discoverer  | Failed to open stream to peer QmShUtWbnU9EJi7yUXAvwms5J8iqyuPS7AbY8ASFGLcnCs:
+rz_go_x_go_x_py_discoverer  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_go_x_py_discoverer  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_go_x_py_discoverer  |   Timeout: 30s
+rz_go_x_go_x_py_discoverer  |   Connection: Yamux
+rz_go_x_go_x_py_discoverer  |   Connection State: established=True, handshake=False
+rz_go_x_go_x_py_discoverer  |   Registry Stats: None
+rz_go_x_go_x_py_discoverer  | 2026-09-06 17:31:20,181 INFO: Discoverer successfully pinged registrant peer!
+rz_go_x_go_x_py_discoverer  | status: pass
+rz_go_x_go_x_py_discoverer  |   + Exception Group Traceback (most recent call last):
+rz_go_x_go_x_py_discoverer  |   |   File "/app/node.py", line 162, in <module>
+rz_go_x_go_x_py_discoverer  |   |     trio.run(main)
+rz_go_x_go_x_py_discoverer  |   |   File "/usr/local/lib/python3.12/site-packages/trio/_core/_run.py", line 2543, in run
+rz_go_x_go_x_py_discoverer  |   |     raise runner.main_task_outcome.error
+rz_go_x_go_x_py_discoverer  |   |   File "/app/node.py", line 56, in main
+rz_go_x_go_x_py_discoverer  |   |     async with host.run(listen_addrs=[listen_addr]):
+rz_go_x_go_x_py_discoverer  |   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+rz_go_x_go_x_py_discoverer  |   |   File "/usr/local/lib/python3.12/contextlib.py", line 231, in __aexit__
+rz_go_x_go_x_py_discoverer  |   |     await self.gen.athrow(value)
+rz_go_x_go_x_py_discoverer  |   |   File "/usr/local/lib/python3.12/site-packages/libp2p/host/basic_host.py", line 560, in _run
+rz_go_x_go_x_py_discoverer  |   |     async with background_trio_service(network):
+rz_go_x_go_x_py_discoverer  |   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+rz_go_x_go_x_py_discoverer  |   |   File "/usr/local/lib/python3.12/contextlib.py", line 231, in __aexit__
+rz_go_x_go_x_py_discoverer  |   |     await self.gen.athrow(value)
+rz_go_x_go_x_py_discoverer  |   |   File "/usr/local/lib/python3.12/site-packages/libp2p/tools/anyio_service/context.py", line 37, in background_trio_service
+rz_go_x_go_x_py_discoverer  |   |     async with trio.open_nursery() as nursery:
+rz_go_x_go_x_py_discoverer  |   |                ^^^^^^^^^^^^^^^^^^^
+rz_go_x_go_x_py_discoverer  |   |   File "/usr/local/lib/python3.12/site-packages/trio/_core/_run.py", line 1117, in __aexit__
+rz_go_x_go_x_py_discoverer  |   |     raise combined_error_from_nursery
+rz_go_x_go_x_py_discoverer  |   | BaseExceptionGroup: Exceptions from Trio nursery (1 sub-exception)
+rz_go_x_go_x_py_discoverer  |   +-+---------------- 1 ----------------
+rz_go_x_go_x_py_discoverer  |     | Exception Group Traceback (most recent call last):
+rz_go_x_go_x_py_discoverer  |     |   File "/usr/local/lib/python3.12/site-packages/libp2p/tools/anyio_service/context.py", line 45, in background_trio_service
+rz_go_x_go_x_py_discoverer  |     |     yield manager
+rz_go_x_go_x_py_discoverer  |     |   File "/usr/local/lib/python3.12/site-packages/libp2p/host/basic_host.py", line 576, in _run
+rz_go_x_go_x_py_discoverer  |     |     async with trio.open_nursery() as nursery:
+rz_go_x_go_x_py_discoverer  |     |                ^^^^^^^^^^^^^^^^^^^
+rz_go_x_go_x_py_discoverer  |     |   File "/usr/local/lib/python3.12/site-packages/trio/_core/_run.py", line 1117, in __aexit__
+rz_go_x_go_x_py_discoverer  |     |     raise combined_error_from_nursery
+rz_go_x_go_x_py_discoverer  |     | BaseExceptionGroup: Exceptions from Trio nursery (1 sub-exception)
+rz_go_x_go_x_py_discoverer  |     +-+---------------- 1 ----------------
+rz_go_x_go_x_py_discoverer  |       | Traceback (most recent call last):
+rz_go_x_go_x_py_discoverer  |       |   File "/usr/local/lib/python3.12/site-packages/libp2p/host/basic_host.py", line 578, in _run
+rz_go_x_go_x_py_discoverer  |       |     yield
+rz_go_x_go_x_py_discoverer  |       |   File "/app/node.py", line 146, in main
+rz_go_x_go_x_py_discoverer  |       |     sys.exit(0)
+rz_go_x_go_x_py_discoverer  |       | SystemExit: 0
+rz_go_x_go_x_py_discoverer  |       +------------------------------------
+[Krz_go_x_go_x_py_discoverer exited with code 1
+ Compose Stopping Aborting on container exit...
+ Container rz_go_x_go_x_py_discoverer Stopping 
+ Container rz_go_x_go_x_py_discoverer Stopped 
+ Container rz_go_x_go_x_py_registrant Stopping 
+ Container rz_go_x_go_x_py_registrant Stopped 
+ Container rz_go_x_go_x_py_server Stopping 
+[Krz_go_x_go_x_py_registrant exited with code 0
+rz_go_x_go_x_py_server      | [0;37m17:31:20.375 [31mERROR [0;34m    swarm2: [0mswarm listener accept error: accept tcp4 172.18.0.3:43017: use of closed network connection [0;37mswarm_listen.go:79[0m
+ Container rz_go_x_go_x_py_server Stopped 
+[Krz_go_x_go_x_py_server exited with code 0
+
+ Container rz_go_x_go_x_py_discoverer Stopping 
+ Container rz_go_x_go_x_py_discoverer Stopped 
+ Container rz_go_x_go_x_py_discoverer Removing 
+ Container rz_go_x_go_x_py_discoverer Removed 
+ Container rz_go_x_go_x_py_registrant Stopping 
+ Container rz_go_x_go_x_py_registrant Stopped 
+ Container rz_go_x_go_x_py_registrant Removing 
+ Container rz_go_x_go_x_py_registrant Removed 
+ Container rz_go_x_go_x_py_server Stopping 
+ Container rz_go_x_go_x_py_server Stopped 
+ Container rz_go_x_go_x_py_server Removing 
+ Container rz_go_x_go_x_py_server Removed 

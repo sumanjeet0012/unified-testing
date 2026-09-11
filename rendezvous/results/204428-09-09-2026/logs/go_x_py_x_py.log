@@ -1,0 +1,44 @@
+ Container rz_go_x_py_x_py_server Creating 
+ Container rz_go_x_py_x_py_server Created 
+ Container rz_go_x_py_x_py_registrant Creating 
+ Container rz_go_x_py_x_py_registrant Created 
+ Container rz_go_x_py_x_py_discoverer Creating 
+ Container rz_go_x_py_x_py_discoverer Created 
+Attaching to rz_go_x_py_x_py_discoverer, rz_go_x_py_x_py_registrant, rz_go_x_py_x_py_server
+ Container rz_go_x_py_x_py_server Starting 
+ Container rz_go_x_py_x_py_server Started 
+ Container rz_go_x_py_x_py_registrant Starting 
+rz_go_x_py_x_py_server  | Node started | role=server addr=/ip4/172.18.0.3/tcp/33897/p2p/12D3KooWJEcn5UBKmZSaCDAWSYVXuHy3eyf7MoAwNGX7YHtt2zgB
+rz_go_x_py_x_py_server  | Rendezvous server ready at /ip4/172.18.0.3/tcp/33897/p2p/12D3KooWJEcn5UBKmZSaCDAWSYVXuHy3eyf7MoAwNGX7YHtt2zgB
+ Container rz_go_x_py_x_py_registrant Started 
+ Container rz_go_x_py_x_py_discoverer Starting 
+ Container rz_go_x_py_x_py_discoverer Started 
+rz_go_x_py_x_py_registrant  | 2026-09-09 15:12:42,795 [INFO] [__main__] Node started in role 'registrant' at /ip4/172.18.0.4/tcp/39297/p2p/12D3KooWEZkNqKh8nwGm4xHXL1KHvWBPrNGUeCy5wa2r5BQV15iR
+rz_go_x_py_x_py_discoverer  | 2026-09-09 15:12:42,853 [INFO] [__main__] Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/42941/p2p/12D3KooWSK1sm5xcLdP98Qxas5YaeUxfeumGysuUcMbSyhynowUp
+rz_go_x_py_x_py_registrant  | 2026-09-09 15:12:43,051 [INFO] [__main__] Registrant registered with TTL 300
+rz_go_x_py_x_py_registrant  | 2026-09-09 15:12:43,051 [INFO] [__main__] Registrant waiting indefinitely for discoverer...
+rz_go_x_py_x_py_discoverer  | 2026-09-09 15:14:33,163 [INFO] [__main__] Discoverer found 1 peer(s)
+rz_go_x_py_x_py_discoverer  | 2026-09-09 15:14:33,418 [INFO] [__main__] Discoverer successfully pinged registrant peer!
+rz_go_x_py_x_py_discoverer  | status: pass
+[Krz_go_x_py_x_py_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_go_x_py_x_py_discoverer Stopping 
+ Container rz_go_x_py_x_py_discoverer Stopped 
+ Container rz_go_x_py_x_py_registrant Stopping 
+ Container rz_go_x_py_x_py_registrant Stopped 
+ Container rz_go_x_py_x_py_server Stopping 
+[Krz_go_x_py_x_py_registrant exited with code 143
+ Container rz_go_x_py_x_py_server Stopped 
+[Krz_go_x_py_x_py_server exited with code 0
+ Container rz_go_x_py_x_py_discoverer Stopping 
+ Container rz_go_x_py_x_py_discoverer Stopped 
+ Container rz_go_x_py_x_py_discoverer Removing 
+ Container rz_go_x_py_x_py_discoverer Removed 
+ Container rz_go_x_py_x_py_registrant Stopping 
+ Container rz_go_x_py_x_py_registrant Stopped 
+ Container rz_go_x_py_x_py_registrant Removing 
+ Container rz_go_x_py_x_py_registrant Removed 
+ Container rz_go_x_py_x_py_server Stopping 
+ Container rz_go_x_py_x_py_server Stopped 
+ Container rz_go_x_py_x_py_server Removing 
+ Container rz_go_x_py_x_py_server Removed 

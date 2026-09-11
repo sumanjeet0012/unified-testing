@@ -1,0 +1,73 @@
+summary:
+  total: 8
+  skipped: 0
+  passed: 6
+  failed: 2
+
+tests:
+  - id: go_x_go_x_go
+    server: go
+    registrant: go
+    discoverer: go
+    status: pass
+    duration: 1s
+    discoverer_output: |
+    status: pass
+  - id: go_x_go_x_py
+    server: go
+    registrant: go
+    discoverer: py
+    status: pass
+    duration: 1s
+    discoverer_output: |
+    status: pass
+  - id: go_x_py_x_go
+    server: go
+    registrant: py
+    discoverer: go
+    status: fail
+    duration: 1s
+    discoverer_output: |
+    error: Dial to registrant failed: failed to dial 12D3KooWAsPE2anzkBXmW35VQeC1sd36CBhAS72yLCituXgdyWKv: no good addresses
+    status: fail
+  - id: go_x_py_x_py
+    server: go
+    registrant: py
+    discoverer: py
+    status: pass
+    duration: 2s
+    discoverer_output: |
+    status: pass
+  - id: py_x_go_x_go
+    server: py
+    registrant: go
+    discoverer: go
+    status: pass
+    duration: 1s
+    discoverer_output: |
+    status: pass
+  - id: py_x_go_x_py
+    server: py
+    registrant: go
+    discoverer: py
+    status: pass
+    duration: 1s
+    discoverer_output: |
+    status: pass
+  - id: py_x_py_x_go
+    server: py
+    registrant: py
+    discoverer: go
+    status: fail
+    duration: 1s
+    discoverer_output: |
+    error: Dial to registrant failed: failed to dial 12D3KooWNBiv4Db19srq54fvozjKgy6itc7tZgWgL3ZuDzNnXeA5: no good addresses
+    status: fail
+  - id: py_x_py_x_py
+    server: py
+    registrant: py
+    discoverer: py
+    status: pass
+    duration: 2s
+    discoverer_output: |
+    status: pass

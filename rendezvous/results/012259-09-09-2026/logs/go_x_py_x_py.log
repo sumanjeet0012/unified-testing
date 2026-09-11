@@ -1,0 +1,73 @@
+ Container rz_go_x_py_x_py_server Creating 
+ Container rz_go_x_py_x_py_server Created 
+ Container rz_go_x_py_x_py_registrant Creating 
+ Container rz_go_x_py_x_py_registrant Created 
+ Container rz_go_x_py_x_py_discoverer Creating 
+ Container rz_go_x_py_x_py_discoverer Created 
+Attaching to rz_go_x_py_x_py_discoverer, rz_go_x_py_x_py_registrant, rz_go_x_py_x_py_server
+ Container rz_go_x_py_x_py_server Starting 
+ Container rz_go_x_py_x_py_server Started 
+ Container rz_go_x_py_x_py_registrant Starting 
+ Container rz_go_x_py_x_py_registrant Started 
+ Container rz_go_x_py_x_py_discoverer Starting 
+rz_go_x_py_x_py_server  | Node started in role 'server' at /ip4/172.18.0.3/tcp/43837/p2p/QmScfhppeRrUUMxmQq93shJG5Q3FfCSCZRiyfqGknzFSsD
+rz_go_x_py_x_py_server  | Rendezvous server waiting indefinitely...
+ Container rz_go_x_py_x_py_discoverer Started 
+rz_go_x_py_x_py_registrant  | 2026-09-08 19:53:05,496 [INFO] [__main__] Node started in role 'registrant' at /ip4/172.18.0.4/tcp/34443/p2p/12D3KooWChQkfjsjw5aGA5wCVDWSJtUXTSzMRVLN1WLzCZGL7mPH
+rz_go_x_py_x_py_registrant  | Failed to open stream to peer QmScfhppeRrUUMxmQq93shJG5Q3FfCSCZRiyfqGknzFSsD:
+rz_go_x_py_x_py_registrant  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_py_x_py_registrant  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_py_x_py_registrant  |   Timeout: 30s
+rz_go_x_py_x_py_registrant  |   Connection: Yamux
+rz_go_x_py_x_py_registrant  |   Connection State: established=True, handshake=False
+rz_go_x_py_x_py_registrant  |   Registry Stats: None
+rz_go_x_py_x_py_discoverer  | 2026-09-08 19:53:05,553 [INFO] [__main__] Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/34313/p2p/12D3KooWS3BJN4Ztmy6nHWjinFyjJMLNQ1swtJ3v1exAZrRTsjDE
+rz_go_x_py_x_py_registrant  | Failed to open stream to peer QmScfhppeRrUUMxmQq93shJG5Q3FfCSCZRiyfqGknzFSsD:
+rz_go_x_py_x_py_registrant  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_py_x_py_registrant  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_py_x_py_registrant  |   Timeout: 30s
+rz_go_x_py_x_py_registrant  |   Connection: Yamux
+rz_go_x_py_x_py_registrant  |   Connection State: established=True, handshake=False
+rz_go_x_py_x_py_registrant  |   Registry Stats: None
+rz_go_x_py_x_py_registrant  | 2026-09-08 19:53:05,755 [INFO] [__main__] Registrant registered with TTL 300
+rz_go_x_py_x_py_registrant  | 2026-09-08 19:53:05,755 [INFO] [__main__] Registrant waiting indefinitely for discoverer...
+rz_go_x_py_x_py_discoverer  | Failed to open stream to peer QmScfhppeRrUUMxmQq93shJG5Q3FfCSCZRiyfqGknzFSsD:
+rz_go_x_py_x_py_discoverer  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_py_x_py_discoverer  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_py_x_py_discoverer  |   Timeout: 30s
+rz_go_x_py_x_py_discoverer  |   Connection: Yamux
+rz_go_x_py_x_py_discoverer  |   Connection State: established=True, handshake=False
+rz_go_x_py_x_py_discoverer  |   Registry Stats: None
+rz_go_x_py_x_py_discoverer  | Failed to open stream to peer QmScfhppeRrUUMxmQq93shJG5Q3FfCSCZRiyfqGknzFSsD:
+rz_go_x_py_x_py_discoverer  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_py_x_py_discoverer  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_py_x_py_discoverer  |   Timeout: 30s
+rz_go_x_py_x_py_discoverer  |   Connection: Yamux
+rz_go_x_py_x_py_discoverer  |   Connection State: established=True, handshake=False
+rz_go_x_py_x_py_discoverer  |   Registry Stats: None
+rz_go_x_py_x_py_discoverer  | 2026-09-08 19:53:06,319 [INFO] [__main__] Discoverer found 1 peer(s)
+rz_go_x_py_x_py_discoverer  | 2026-09-08 19:53:06,574 [INFO] [__main__] Discoverer successfully pinged registrant peer!
+rz_go_x_py_x_py_discoverer  | status: pass
+[Krz_go_x_py_x_py_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_go_x_py_x_py_discoverer Stopping 
+ Container rz_go_x_py_x_py_discoverer Stopped 
+ Container rz_go_x_py_x_py_registrant Stopping 
+ Container rz_go_x_py_x_py_registrant Stopped 
+ Container rz_go_x_py_x_py_server Stopping 
+[Krz_go_x_py_x_py_registrant exited with code 143
+rz_go_x_py_x_py_server      | [0;37m19:53:06.711 [31mERROR [0;34m    swarm2: [0mswarm listener accept error: accept tcp4 172.18.0.3:43837: use of closed network connection [0;37mswarm_listen.go:79[0m
+ Container rz_go_x_py_x_py_server Stopped 
+[Krz_go_x_py_x_py_server exited with code 0
+ Container rz_go_x_py_x_py_discoverer Stopping 
+ Container rz_go_x_py_x_py_discoverer Stopped 
+ Container rz_go_x_py_x_py_discoverer Removing 
+ Container rz_go_x_py_x_py_discoverer Removed 
+ Container rz_go_x_py_x_py_registrant Stopping 
+ Container rz_go_x_py_x_py_registrant Stopped 
+ Container rz_go_x_py_x_py_registrant Removing 
+ Container rz_go_x_py_x_py_registrant Removed 
+ Container rz_go_x_py_x_py_server Stopping 
+ Container rz_go_x_py_x_py_server Stopped 
+ Container rz_go_x_py_x_py_server Removing 
+ Container rz_go_x_py_x_py_server Removed 

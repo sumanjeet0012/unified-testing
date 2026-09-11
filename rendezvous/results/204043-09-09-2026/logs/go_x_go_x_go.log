@@ -1,0 +1,43 @@
+ Container rz_go_x_go_x_go_server Creating 
+ Container rz_go_x_go_x_go_server Created 
+ Container rz_go_x_go_x_go_registrant Creating 
+ Container rz_go_x_go_x_go_registrant Created 
+ Container rz_go_x_go_x_go_discoverer Creating 
+ Container rz_go_x_go_x_go_discoverer Created 
+Attaching to rz_go_x_go_x_go_discoverer, rz_go_x_go_x_go_registrant, rz_go_x_go_x_go_server
+ Container rz_go_x_go_x_go_server Starting 
+ Container rz_go_x_go_x_go_server Started 
+ Container rz_go_x_go_x_go_registrant Starting 
+rz_go_x_go_x_go_server  | Node started | role=server addr=/ip4/172.18.0.3/tcp/35141/p2p/12D3KooWDUkevjNvStcfN6NULVmvMYgdN1bF3SWBKGXiA7gETW4J
+rz_go_x_go_x_go_server  | Rendezvous server ready at /ip4/172.18.0.3/tcp/35141/p2p/12D3KooWDUkevjNvStcfN6NULVmvMYgdN1bF3SWBKGXiA7gETW4J
+ Container rz_go_x_go_x_go_registrant Started 
+ Container rz_go_x_go_x_go_discoverer Starting 
+rz_go_x_go_x_go_registrant  | Node started | role=registrant addr=/ip4/172.18.0.4/tcp/40581/p2p/12D3KooWLka1BCuMH6FUnGTrsn2LgTfQJoVzC9Xpv6p8rQK7xoT8
+rz_go_x_go_x_go_registrant  | Registered in namespace "rendezvous-ns-efc365ae" with TTL 5m0s
+rz_go_x_go_x_go_registrant  | Registrant waiting for discoverer...
+ Container rz_go_x_go_x_go_discoverer Started 
+rz_go_x_go_x_go_discoverer  | Node started | role=discoverer addr=/ip4/172.18.0.5/tcp/46743/p2p/12D3KooWHw4d2UMcA3xEqmBEjcnq2JAQhnN4vR1P9DVSuRLVqkGT
+rz_go_x_go_x_go_discoverer  | Discovered 1 peer(s)
+rz_go_x_go_x_go_discoverer  | status: pass
+[Krz_go_x_go_x_go_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_go_x_go_x_go_discoverer Stopping 
+ Container rz_go_x_go_x_go_discoverer Stopped 
+ Container rz_go_x_go_x_go_registrant Stopping 
+ Container rz_go_x_go_x_go_registrant Stopped 
+ Container rz_go_x_go_x_go_server Stopping 
+[Krz_go_x_go_x_go_registrant exited with code 137
+ Container rz_go_x_go_x_go_server Stopped 
+[Krz_go_x_go_x_go_server exited with code 0
+ Container rz_go_x_go_x_go_discoverer Stopping 
+ Container rz_go_x_go_x_go_discoverer Stopped 
+ Container rz_go_x_go_x_go_discoverer Removing 
+ Container rz_go_x_go_x_go_discoverer Removed 
+ Container rz_go_x_go_x_go_registrant Stopping 
+ Container rz_go_x_go_x_go_registrant Stopped 
+ Container rz_go_x_go_x_go_registrant Removing 
+ Container rz_go_x_go_x_go_registrant Removed 
+ Container rz_go_x_go_x_go_server Stopping 
+ Container rz_go_x_go_x_go_server Stopped 
+ Container rz_go_x_go_x_go_server Removing 
+ Container rz_go_x_go_x_go_server Removed 

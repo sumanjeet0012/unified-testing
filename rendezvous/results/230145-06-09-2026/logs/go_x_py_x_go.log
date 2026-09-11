@@ -1,0 +1,65 @@
+ Container rz_go_x_py_x_go_server Creating 
+ Container rz_go_x_py_x_go_server Created 
+ Container rz_go_x_py_x_go_registrant Creating 
+ Container rz_go_x_py_x_go_registrant Created 
+ Container rz_go_x_py_x_go_discoverer Creating 
+ Container rz_go_x_py_x_go_discoverer Created 
+Attaching to rz_go_x_py_x_go_discoverer, rz_go_x_py_x_go_registrant, rz_go_x_py_x_go_server
+ Container rz_go_x_py_x_go_server Starting 
+ Container rz_go_x_py_x_go_server Started 
+ Container rz_go_x_py_x_go_registrant Starting 
+ Container rz_go_x_py_x_go_registrant Started 
+ Container rz_go_x_py_x_go_discoverer Starting 
+ Container rz_go_x_py_x_go_discoverer Started 
+rz_go_x_py_x_go_server  | Node started in role 'server' at /ip4/172.18.0.3/tcp/44283/p2p/QmRxZbuZEYn2mRuuMGU85PrqdJ6C286nozwajYR6R5Cgkp
+rz_go_x_py_x_go_server  | Rendezvous server waiting indefinitely...
+rz_go_x_py_x_go_discoverer  | Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/33599/p2p/QmatWqQTVyjFd8R4swLBPM8x1KKhToB8u7J21wvU7eN9iy
+rz_go_x_py_x_go_registrant  | 2026-09-06 17:31:46,111 INFO: Node started in role 'registrant' at /ip4/172.18.0.4/tcp/41957/p2p/12D3KooWNuqhiarQVg2HvJdA1QMcd8XLyUNTgYBeGowxfgDYF7VP
+rz_go_x_py_x_go_registrant  | Failed to open stream to peer QmRxZbuZEYn2mRuuMGU85PrqdJ6C286nozwajYR6R5Cgkp:
+rz_go_x_py_x_go_registrant  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_py_x_go_registrant  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_py_x_go_registrant  |   Timeout: 30s
+rz_go_x_py_x_go_registrant  |   Connection: Yamux
+rz_go_x_py_x_go_registrant  |   Connection State: established=True, handshake=False
+rz_go_x_py_x_go_registrant  |   Registry Stats: None
+rz_go_x_py_x_go_registrant  | Failed to open stream to peer QmRxZbuZEYn2mRuuMGU85PrqdJ6C286nozwajYR6R5Cgkp:
+rz_go_x_py_x_go_registrant  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_py_x_go_registrant  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_py_x_go_registrant  |   Timeout: 30s
+rz_go_x_py_x_go_registrant  |   Connection: Yamux
+rz_go_x_py_x_go_registrant  |   Connection State: established=True, handshake=False
+rz_go_x_py_x_go_registrant  |   Registry Stats: None
+rz_go_x_py_x_go_registrant  | 2026-09-06 17:31:46,374 INFO: Registrant registered with TTL 300
+rz_go_x_py_x_go_registrant  | 2026-09-06 17:31:46,376 INFO: Registrant waiting indefinitely for discoverer...
+rz_go_x_py_x_go_discoverer  | Discoverer found 1 peer(s)
+rz_go_x_py_x_go_registrant  | Failed to open stream to peer QmatWqQTVyjFd8R4swLBPM8x1KKhToB8u7J21wvU7eN9iy:
+rz_go_x_py_x_go_registrant  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_go_x_py_x_go_registrant  |   Protocols: ['/ipfs/id/1.0.0']
+rz_go_x_py_x_go_registrant  |   Timeout: 30s
+rz_go_x_py_x_go_registrant  |   Connection: Yamux
+rz_go_x_py_x_go_registrant  |   Connection State: established=True, handshake=False
+rz_go_x_py_x_go_registrant  |   Registry Stats: None
+rz_go_x_py_x_go_discoverer  | status: pass
+[Krz_go_x_py_x_go_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_go_x_py_x_go_discoverer Stopping 
+ Container rz_go_x_py_x_go_discoverer Stopped 
+ Container rz_go_x_py_x_go_registrant Stopping 
+ Container rz_go_x_py_x_go_registrant Stopped 
+ Container rz_go_x_py_x_go_server Stopping 
+[Krz_go_x_py_x_go_registrant exited with code 143
+rz_go_x_py_x_go_server      | [0;37m17:31:46.618 [31mERROR [0;34m    swarm2: [0mswarm listener accept error: accept tcp4 172.18.0.3:44283: use of closed network connection [0;37mswarm_listen.go:79[0m
+ Container rz_go_x_py_x_go_server Stopped 
+[Krz_go_x_py_x_go_server exited with code 0
+ Container rz_go_x_py_x_go_discoverer Stopping 
+ Container rz_go_x_py_x_go_discoverer Stopped 
+ Container rz_go_x_py_x_go_discoverer Removing 
+ Container rz_go_x_py_x_go_discoverer Removed 
+ Container rz_go_x_py_x_go_registrant Stopping 
+ Container rz_go_x_py_x_go_registrant Stopped 
+ Container rz_go_x_py_x_go_registrant Removing 
+ Container rz_go_x_py_x_go_registrant Removed 
+ Container rz_go_x_py_x_go_server Stopping 
+ Container rz_go_x_py_x_go_server Stopped 
+ Container rz_go_x_py_x_go_server Removing 
+ Container rz_go_x_py_x_go_server Removed 

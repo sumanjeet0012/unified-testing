@@ -1,0 +1,59 @@
+ Container rz_py_x_py_x_go_server Creating 
+ Container rz_py_x_py_x_go_server Created 
+ Container rz_py_x_py_x_go_registrant Creating 
+ Container rz_py_x_py_x_go_registrant Created 
+ Container rz_py_x_py_x_go_discoverer Creating 
+ Container rz_py_x_py_x_go_discoverer Created 
+Attaching to rz_py_x_py_x_go_discoverer, rz_py_x_py_x_go_registrant, rz_py_x_py_x_go_server
+ Container rz_py_x_py_x_go_server Starting 
+ Container rz_py_x_py_x_go_server Started 
+ Container rz_py_x_py_x_go_registrant Starting 
+ Container rz_py_x_py_x_go_registrant Started 
+ Container rz_py_x_py_x_go_discoverer Starting 
+ Container rz_py_x_py_x_go_discoverer Started 
+rz_py_x_py_x_go_discoverer  | Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/38059/p2p/QmZctRQH7kxP7FpE5tQTNZyDSksSCrRee2yDMUn3mxtnMY
+rz_py_x_py_x_go_server      | 2026-09-06 18:52:51,183 INFO: Node started in role 'server' at /ip4/172.18.0.3/tcp/39901/p2p/12D3KooWQmJ738UUKCsyZg8H4GvSSu7hYrFXxT8fjut7JYLNWz3G
+rz_py_x_py_x_go_server      | 2026-09-06 18:52:51,184 INFO: Rendezvous server waiting indefinitely...
+rz_py_x_py_x_go_registrant  | 2026-09-06 18:52:51,232 INFO: Node started in role 'registrant' at /ip4/172.18.0.4/tcp/41925/p2p/12D3KooWP5LhMjbfyCHoh3vtwercx2RHp4DkJ6gWD8ip5vvkyaVj
+rz_py_x_py_x_go_server      | Error handling stream from 12D3KooWP5LhMjbfyCHoh3vtwercx2RHp4DkJ6gWD8ip5vvkyaVj: 
+rz_py_x_py_x_go_registrant  | 2026-09-06 18:52:51,490 INFO: Registrant registered with TTL 300
+rz_py_x_py_x_go_registrant  | 2026-09-06 18:52:51,491 INFO: Registrant waiting indefinitely for discoverer...
+rz_py_x_py_x_go_server      | Failed to open stream to peer QmZctRQH7kxP7FpE5tQTNZyDSksSCrRee2yDMUn3mxtnMY:
+rz_py_x_py_x_go_server      |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_py_x_py_x_go_server      |   Protocols: ['/ipfs/id/1.0.0']
+rz_py_x_py_x_go_server      |   Timeout: 30s
+rz_py_x_py_x_go_server      |   Connection: Yamux
+rz_py_x_py_x_go_server      |   Connection State: established=True, handshake=False
+rz_py_x_py_x_go_server      |   Registry Stats: None
+rz_py_x_py_x_go_discoverer  | Discoverer found 1 peer(s)
+rz_py_x_py_x_go_server      | Error handling stream from QmZctRQH7kxP7FpE5tQTNZyDSksSCrRee2yDMUn3mxtnMY: 
+rz_py_x_py_x_go_registrant  | Failed to open stream to peer QmZctRQH7kxP7FpE5tQTNZyDSksSCrRee2yDMUn3mxtnMY:
+rz_py_x_py_x_go_registrant  |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_py_x_py_x_go_registrant  |   Protocols: ['/ipfs/id/1.0.0']
+rz_py_x_py_x_go_registrant  |   Timeout: 30s
+rz_py_x_py_x_go_registrant  |   Connection: Yamux
+rz_py_x_py_x_go_registrant  |   Connection State: established=True, handshake=False
+rz_py_x_py_x_go_registrant  |   Registry Stats: None
+rz_py_x_py_x_go_discoverer  | status: pass
+[Krz_py_x_py_x_go_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_py_x_py_x_go_discoverer Stopping 
+ Container rz_py_x_py_x_go_discoverer Stopped 
+ Container rz_py_x_py_x_go_registrant Stopping 
+ Container rz_py_x_py_x_go_registrant Stopped 
+ Container rz_py_x_py_x_go_server Stopping 
+[Krz_py_x_py_x_go_registrant exited with code 143
+ Container rz_py_x_py_x_go_server Stopped 
+[Krz_py_x_py_x_go_server exited with code 143
+ Container rz_py_x_py_x_go_discoverer Stopping 
+ Container rz_py_x_py_x_go_discoverer Stopped 
+ Container rz_py_x_py_x_go_discoverer Removing 
+ Container rz_py_x_py_x_go_discoverer Removed 
+ Container rz_py_x_py_x_go_registrant Stopping 
+ Container rz_py_x_py_x_go_registrant Stopped 
+ Container rz_py_x_py_x_go_registrant Removing 
+ Container rz_py_x_py_x_go_registrant Removed 
+ Container rz_py_x_py_x_go_server Stopping 
+ Container rz_py_x_py_x_go_server Stopped 
+ Container rz_py_x_py_x_go_server Removing 
+ Container rz_py_x_py_x_go_server Removed 

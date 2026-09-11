@@ -1,0 +1,54 @@
+ Container rz_py_x_py_x_go_server Creating 
+ Container rz_py_x_py_x_go_server Created 
+ Container rz_py_x_py_x_go_registrant Creating 
+ Container rz_py_x_py_x_go_registrant Created 
+ Container rz_py_x_py_x_go_discoverer Creating 
+ Container rz_py_x_py_x_go_discoverer Created 
+Attaching to rz_py_x_py_x_go_discoverer, rz_py_x_py_x_go_registrant, rz_py_x_py_x_go_server
+ Container rz_py_x_py_x_go_server Starting 
+ Container rz_py_x_py_x_go_server Started 
+ Container rz_py_x_py_x_go_registrant Starting 
+ Container rz_py_x_py_x_go_registrant Started 
+ Container rz_py_x_py_x_go_discoverer Starting 
+ Container rz_py_x_py_x_go_discoverer Started 
+rz_py_x_py_x_go_discoverer  | Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/46049/p2p/QmV6yHBSX3Mz9unGcQEySuPMSQ81aT4gLMx2KAkwYDx3uB
+rz_py_x_py_x_go_server      | 2026-09-08 19:53:10,695 [INFO] [__main__] Node started in role 'server' at /ip4/172.18.0.3/tcp/36543/p2p/12D3KooWLKS1wuGBbzzLR8mTirfPQjB5MK2ynJnTr3RVNGmcmmao
+rz_py_x_py_x_go_server      | 2026-09-08 19:53:10,699 [INFO] [__main__] Rendezvous server waiting indefinitely...
+rz_py_x_py_x_go_registrant  | 2026-09-08 19:53:10,754 [INFO] [__main__] Node started in role 'registrant' at /ip4/172.18.0.4/tcp/38159/p2p/12D3KooWNBiv4Db19srq54fvozjKgy6itc7tZgWgL3ZuDzNnXeA5
+rz_py_x_py_x_go_server      | Error handling stream from 12D3KooWNBiv4Db19srq54fvozjKgy6itc7tZgWgL3ZuDzNnXeA5: 
+rz_py_x_py_x_go_registrant  | 2026-09-08 19:53:11,011 [INFO] [__main__] Registrant registered with TTL 300
+rz_py_x_py_x_go_registrant  | 2026-09-08 19:53:11,012 [INFO] [__main__] Registrant waiting indefinitely for discoverer...
+rz_py_x_py_x_go_server      | Failed to open stream to peer QmV6yHBSX3Mz9unGcQEySuPMSQ81aT4gLMx2KAkwYDx3uB:
+rz_py_x_py_x_go_server      |   Error: protocols not supported: tried ['/ipfs/id/1.0.0'], timeout=10s. Last error: protocol not supported: /ipfs/id/1.0.0, response='na'
+rz_py_x_py_x_go_server      |   Protocols: ['/ipfs/id/1.0.0']
+rz_py_x_py_x_go_server      |   Timeout: 30s
+rz_py_x_py_x_go_server      |   Connection: Yamux
+rz_py_x_py_x_go_server      |   Connection State: established=True, handshake=False
+rz_py_x_py_x_go_server      |   Registry Stats: None
+rz_py_x_py_x_go_discoverer  | Discoverer found 1 peer(s)
+rz_py_x_py_x_go_discoverer  | error: Dial to registrant failed: failed to dial 12D3KooWNBiv4Db19srq54fvozjKgy6itc7tZgWgL3ZuDzNnXeA5: no good addresses
+rz_py_x_py_x_go_discoverer  | status: fail
+rz_py_x_py_x_go_server      | Error handling stream from QmV6yHBSX3Mz9unGcQEySuPMSQ81aT4gLMx2KAkwYDx3uB: 
+[Krz_py_x_py_x_go_discoverer exited with code 1
+ Compose Stopping Aborting on container exit...
+ Container rz_py_x_py_x_go_discoverer Stopping 
+ Container rz_py_x_py_x_go_discoverer Stopped 
+ Container rz_py_x_py_x_go_registrant Stopping 
+ Container rz_py_x_py_x_go_registrant Stopped 
+ Container rz_py_x_py_x_go_server Stopping 
+[Krz_py_x_py_x_go_registrant exited with code 143
+ Container rz_py_x_py_x_go_server Stopped 
+[Krz_py_x_py_x_go_server exited with code 143
+
+ Container rz_py_x_py_x_go_discoverer Stopping 
+ Container rz_py_x_py_x_go_discoverer Stopped 
+ Container rz_py_x_py_x_go_discoverer Removing 
+ Container rz_py_x_py_x_go_discoverer Removed 
+ Container rz_py_x_py_x_go_registrant Stopping 
+ Container rz_py_x_py_x_go_registrant Stopped 
+ Container rz_py_x_py_x_go_registrant Removing 
+ Container rz_py_x_py_x_go_registrant Removed 
+ Container rz_py_x_py_x_go_server Stopping 
+ Container rz_py_x_py_x_go_server Stopped 
+ Container rz_py_x_py_x_go_server Removing 
+ Container rz_py_x_py_x_go_server Removed 

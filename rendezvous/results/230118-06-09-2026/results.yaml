@@ -1,0 +1,15 @@
+summary:
+  total: 1
+  skipped: 7
+  passed: 0
+  failed: 1
+
+tests:
+  - id: go_x_go_x_py
+    server: go
+    registrant: go
+    discoverer: py
+    status: fail
+    duration: 2s
+    discoverer_output: |
+    status: pass

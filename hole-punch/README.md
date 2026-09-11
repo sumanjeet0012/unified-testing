@@ -8,6 +8,8 @@ The hole-punch test suite verifies that libp2p implementations can establish dir
 
 **Current implementations**:
 - **rust-libp2p**: v0.56
+- **nim-libp2p**: v2.2
+- **py-libp2p**: v0.7.0 + spec-compliance fixes (tcp/noise/yamux only)
 - **Router**: Linux-based NAT router
 - **Relay**: rust-libp2p v0.56 relay server
 

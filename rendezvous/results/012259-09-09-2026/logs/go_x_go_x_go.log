@@ -1,0 +1,44 @@
+ Container rz_go_x_go_x_go_server Creating 
+ Container rz_go_x_go_x_go_server Created 
+ Container rz_go_x_go_x_go_registrant Creating 
+ Container rz_go_x_go_x_go_registrant Created 
+ Container rz_go_x_go_x_go_discoverer Creating 
+ Container rz_go_x_go_x_go_discoverer Created 
+Attaching to rz_go_x_go_x_go_discoverer, rz_go_x_go_x_go_registrant, rz_go_x_go_x_go_server
+ Container rz_go_x_go_x_go_server Starting 
+ Container rz_go_x_go_x_go_server Started 
+ Container rz_go_x_go_x_go_registrant Starting 
+ Container rz_go_x_go_x_go_registrant Started 
+ Container rz_go_x_go_x_go_discoverer Starting 
+ Container rz_go_x_go_x_go_discoverer Started 
+rz_go_x_go_x_go_server  | Node started in role 'server' at /ip4/172.18.0.3/tcp/38351/p2p/QmNd2AdoA2tRHzkAay4kbQWSasiK3C74CaAdZAYn2ZxEYG
+rz_go_x_go_x_go_server  | Rendezvous server waiting indefinitely...
+rz_go_x_go_x_go_discoverer  | Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/46135/p2p/Qmejqo6KXPz4REQSAM2ew3ATrcy5eyADPMQwuCxBLkJXDk
+rz_go_x_go_x_go_registrant  | Node started in role 'registrant' at /ip4/172.18.0.4/tcp/44083/p2p/QmWRyKt4RQWRmSqW7Suys29Yh8F9f7GntLEX8vA5Aw6oNQ
+rz_go_x_go_x_go_registrant  | Registrant registered with TTL 5m0s
+rz_go_x_go_x_go_registrant  | Registrant waiting indefinitely for discoverer...
+rz_go_x_go_x_go_discoverer  | Discoverer found 1 peer(s)
+rz_go_x_go_x_go_discoverer  | status: pass
+[Krz_go_x_go_x_go_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_go_x_go_x_go_discoverer Stopping 
+ Container rz_go_x_go_x_go_discoverer Stopped 
+ Container rz_go_x_go_x_go_registrant Stopping 
+ Container rz_go_x_go_x_go_registrant Stopped 
+ Container rz_go_x_go_x_go_server Stopping 
+[Krz_go_x_go_x_go_registrant exited with code 0
+rz_go_x_go_x_go_server      | [0;37m19:53:01.257 [31mERROR [0;34m    swarm2: [0mswarm listener accept error: accept tcp4 172.18.0.3:38351: use of closed network connection [0;37mswarm_listen.go:79[0m
+ Container rz_go_x_go_x_go_server Stopped 
+[Krz_go_x_go_x_go_server exited with code 0
+ Container rz_go_x_go_x_go_discoverer Stopping 
+ Container rz_go_x_go_x_go_discoverer Stopped 
+ Container rz_go_x_go_x_go_discoverer Removing 
+ Container rz_go_x_go_x_go_discoverer Removed 
+ Container rz_go_x_go_x_go_registrant Stopping 
+ Container rz_go_x_go_x_go_registrant Stopped 
+ Container rz_go_x_go_x_go_registrant Removing 
+ Container rz_go_x_go_x_go_registrant Removed 
+ Container rz_go_x_go_x_go_server Stopping 
+ Container rz_go_x_go_x_go_server Stopped 
+ Container rz_go_x_go_x_go_server Removing 
+ Container rz_go_x_go_x_go_server Removed 

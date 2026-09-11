@@ -1,0 +1,46 @@
+ Container rz_py_x_py_x_py_server Creating 
+ Container rz_py_x_py_x_py_server Created 
+ Container rz_py_x_py_x_py_registrant Creating 
+ Container rz_py_x_py_x_py_registrant Created 
+ Container rz_py_x_py_x_py_discoverer Creating 
+ Container rz_py_x_py_x_py_discoverer Created 
+Attaching to rz_py_x_py_x_py_discoverer, rz_py_x_py_x_py_registrant, rz_py_x_py_x_py_server
+ Container rz_py_x_py_x_py_server Starting 
+ Container rz_py_x_py_x_py_server Started 
+ Container rz_py_x_py_x_py_registrant Starting 
+ Container rz_py_x_py_x_py_registrant Started 
+ Container rz_py_x_py_x_py_discoverer Starting 
+ Container rz_py_x_py_x_py_discoverer Started 
+rz_py_x_py_x_py_server  | 2026-09-08 19:55:05,539 [INFO] [__main__] Node started in role 'server' at /ip4/172.18.0.3/tcp/41159/p2p/12D3KooWNfLtkdDfD3GhHWmPgwHR99i8tLHu6Y2HehyFQhfbvrd6
+rz_py_x_py_x_py_server  | 2026-09-08 19:55:05,540 [INFO] [__main__] Rendezvous server waiting indefinitely...
+rz_py_x_py_x_py_registrant  | 2026-09-08 19:55:05,679 [INFO] [__main__] Node started in role 'registrant' at /ip4/172.18.0.4/tcp/33701/p2p/12D3KooWMSx4dojXgT9c5Cth227qEwRsih5Qi88v8m9e94N57XPr
+rz_py_x_py_x_py_discoverer  | 2026-09-08 19:55:05,741 [INFO] [__main__] Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/37559/p2p/12D3KooWRSbKzKPx1muhk6wWy88FEGLNj8dUt41jqJJuL521nRvE
+rz_py_x_py_x_py_registrant  | 2026-09-08 19:55:05,935 [INFO] [__main__] Registrant registered with TTL 300
+rz_py_x_py_x_py_server      | Error handling stream from 12D3KooWMSx4dojXgT9c5Cth227qEwRsih5Qi88v8m9e94N57XPr: 
+rz_py_x_py_x_py_registrant  | 2026-09-08 19:55:05,936 [INFO] [__main__] Registrant waiting indefinitely for discoverer...
+rz_py_x_py_x_py_server      | Error handling stream from 12D3KooWRSbKzKPx1muhk6wWy88FEGLNj8dUt41jqJJuL521nRvE: 
+rz_py_x_py_x_py_discoverer  | 2026-09-08 19:55:06,503 [INFO] [__main__] Discoverer found 1 peer(s)
+rz_py_x_py_x_py_discoverer  | 2026-09-08 19:55:06,755 [INFO] [__main__] Discoverer successfully pinged registrant peer!
+rz_py_x_py_x_py_discoverer  | status: pass
+[Krz_py_x_py_x_py_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_py_x_py_x_py_discoverer Stopping 
+ Container rz_py_x_py_x_py_discoverer Stopped 
+ Container rz_py_x_py_x_py_registrant Stopping 
+ Container rz_py_x_py_x_py_registrant Stopped 
+ Container rz_py_x_py_x_py_server Stopping 
+[Krz_py_x_py_x_py_registrant exited with code 143
+ Container rz_py_x_py_x_py_server Stopped 
+[Krz_py_x_py_x_py_server exited with code 143
+ Container rz_py_x_py_x_py_discoverer Stopping 
+ Container rz_py_x_py_x_py_discoverer Stopped 
+ Container rz_py_x_py_x_py_discoverer Removing 
+ Container rz_py_x_py_x_py_discoverer Removed 
+ Container rz_py_x_py_x_py_registrant Stopping 
+ Container rz_py_x_py_x_py_registrant Stopped 
+ Container rz_py_x_py_x_py_registrant Removing 
+ Container rz_py_x_py_x_py_registrant Removed 
+ Container rz_py_x_py_x_py_server Stopping 
+ Container rz_py_x_py_x_py_server Stopped 
+ Container rz_py_x_py_x_py_server Removing 
+ Container rz_py_x_py_x_py_server Removed 

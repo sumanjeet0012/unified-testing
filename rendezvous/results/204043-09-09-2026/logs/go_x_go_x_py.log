@@ -1,0 +1,44 @@
+ Container rz_go_x_go_x_py_server Creating 
+ Container rz_go_x_go_x_py_server Created 
+ Container rz_go_x_go_x_py_registrant Creating 
+ Container rz_go_x_go_x_py_registrant Created 
+ Container rz_go_x_go_x_py_discoverer Creating 
+ Container rz_go_x_go_x_py_discoverer Created 
+Attaching to rz_go_x_go_x_py_discoverer, rz_go_x_go_x_py_registrant, rz_go_x_go_x_py_server
+ Container rz_go_x_go_x_py_server Starting 
+ Container rz_go_x_go_x_py_server Started 
+ Container rz_go_x_go_x_py_registrant Starting 
+rz_go_x_go_x_py_server  | Node started | role=server addr=/ip4/172.18.0.3/tcp/38791/p2p/12D3KooWFKTbdnEBVDLRymsCJTAfEBQC2L4f4gscJaTgHZh1ih1a
+rz_go_x_go_x_py_server  | Rendezvous server ready at /ip4/172.18.0.3/tcp/38791/p2p/12D3KooWFKTbdnEBVDLRymsCJTAfEBQC2L4f4gscJaTgHZh1ih1a
+ Container rz_go_x_go_x_py_registrant Started 
+ Container rz_go_x_go_x_py_discoverer Starting 
+rz_go_x_go_x_py_registrant  | Node started | role=registrant addr=/ip4/172.18.0.4/tcp/34539/p2p/12D3KooWDGyBtPzN4XqeopcZgFtYS6ENQs8U67TH7gUEMPPexN1i
+rz_go_x_go_x_py_registrant  | Registered in namespace "rendezvous-ns-0399a988" with TTL 5m0s
+rz_go_x_go_x_py_registrant  | Registrant waiting for discoverer...
+ Container rz_go_x_go_x_py_discoverer Started 
+rz_go_x_go_x_py_discoverer  | 2026-09-09 15:12:21,038 [INFO] [__main__] Node started in role 'discoverer' at /ip4/172.18.0.5/tcp/45663/p2p/12D3KooWSCZWJo1v73t2UAk9Etmj8z7qYN1QBiUhzRzxfRCzFjwa
+rz_go_x_go_x_py_discoverer  | 2026-09-09 15:12:21,296 [INFO] [__main__] Discoverer found 1 peer(s)
+rz_go_x_go_x_py_discoverer  | 2026-09-09 15:12:21,549 [INFO] [__main__] Discoverer successfully pinged registrant peer!
+rz_go_x_go_x_py_discoverer  | status: pass
+[Krz_go_x_go_x_py_discoverer exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container rz_go_x_go_x_py_discoverer Stopping 
+ Container rz_go_x_go_x_py_discoverer Stopped 
+ Container rz_go_x_go_x_py_registrant Stopping 
+ Container rz_go_x_go_x_py_registrant Stopped 
+ Container rz_go_x_go_x_py_server Stopping 
+[Krz_go_x_go_x_py_registrant exited with code 0
+ Container rz_go_x_go_x_py_server Stopped 
+[Krz_go_x_go_x_py_server exited with code 0
+ Container rz_go_x_go_x_py_discoverer Stopping 
+ Container rz_go_x_go_x_py_discoverer Stopped 
+ Container rz_go_x_go_x_py_discoverer Removing 
+ Container rz_go_x_go_x_py_discoverer Removed 
+ Container rz_go_x_go_x_py_registrant Stopping 
+ Container rz_go_x_go_x_py_registrant Stopped 
+ Container rz_go_x_go_x_py_registrant Removing 
+ Container rz_go_x_go_x_py_registrant Removed 
+ Container rz_go_x_go_x_py_server Stopping 
+ Container rz_go_x_go_x_py_server Stopped 
+ Container rz_go_x_go_x_py_server Removing 
+ Container rz_go_x_go_x_py_server Removed 

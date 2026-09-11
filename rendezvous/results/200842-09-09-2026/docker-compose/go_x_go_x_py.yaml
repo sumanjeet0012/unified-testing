@@ -1,0 +1,39 @@
+name: rz_go_x_go_x_py
+
+networks:
+  default:
+    name: transport-network
+    external: true
+
+services:
+  server:
+    image: "rendezvous-go"
+    container_name: rz_go_x_go_x_py_server
+    init: true
+    environment:
+      - ROLE=server
+      - REDIS_ADDR=transport-redis:6379
+      - TEST_KEY=0399a988
+
+  registrant:
+    image: "rendezvous-go"
+    container_name: rz_go_x_go_x_py_registrant
+    init: true
+    depends_on:
+      - server
+    environment:
+      - ROLE=registrant
+      - REDIS_ADDR=transport-redis:6379
+      - TEST_KEY=0399a988
+
+  discoverer:
+    image: "rendezvous-py"
+    container_name: rz_go_x_go_x_py_discoverer
+    init: true
+    depends_on:
+      - server
+      - registrant
+    environment:
+      - ROLE=discoverer
+      - REDIS_ADDR=transport-redis:6379
+      - TEST_KEY=0399a988

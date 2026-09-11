@@ -150,7 +150,8 @@ RELAY_ENV="      - REDIS_ADDR=hole-punch-redis:6379
       - DIALER_ROUTER_IP=${DIALER_ROUTER_WAN_IP}
       - LISTENER_LAN_SUBNET=${LISTENER_LAN_SUBNET}
       - LISTENER_ROUTER_IP=${LISTENER_ROUTER_WAN_IP}
-      - DEBUG=${DEBUG:-false}"
+      - DEBUG=${DEBUG:-false}
+      - LIBP2P_DEBUG=${LIBP2P_DEBUG:-}"
 
 if [ "${SECURE_CHANNEL_NAME}" != "null" ]; then
     RELAY_ENV="${RELAY_ENV}
@@ -193,7 +194,8 @@ else
       - DIALER_IP=${DIALER_IP}
       - WAN_SUBNET=${WAN_SUBNET}
       - WAN_ROUTER_IP=${DIALER_ROUTER_LAN_IP}
-      - DEBUG=${DEBUG:-false}"
+      - DEBUG=${DEBUG:-false}
+      - LIBP2P_DEBUG=${LIBP2P_DEBUG:-}"
   if [ "${SECURE_CHANNEL_NAME}" != "null" ]; then
     DIALER_ENV="${DIALER_ENV}
       - SECURE_CHANNEL=${SECURE_CHANNEL_NAME}"
@@ -220,7 +222,8 @@ else
       - LISTENER_IP=${LISTENER_IP}
       - WAN_SUBNET=${WAN_SUBNET}
       - WAN_ROUTER_IP=${LISTENER_ROUTER_LAN_IP}
-      - DEBUG=${DEBUG:-false}"
+      - DEBUG=${DEBUG:-false}
+      - LIBP2P_DEBUG=${LIBP2P_DEBUG:-}"
   if [ "${SECURE_CHANNEL_NAME}" != "null" ]; then
     LISTENER_ENV="${LISTENER_ENV}
       - SECURE_CHANNEL=${SECURE_CHANNEL_NAME}"

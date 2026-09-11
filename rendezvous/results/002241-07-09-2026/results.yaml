@@ -1,0 +1,71 @@
+summary:
+  total: 8
+  skipped: 0
+  passed: 8
+  failed: 0
+
+tests:
+  - id: go_x_go_x_go
+    server: go
+    registrant: go
+    discoverer: go
+    status: pass
+    duration: 1s
+    discoverer_output: |
+    status: pass
+  - id: go_x_go_x_py
+    server: go
+    registrant: go
+    discoverer: py
+    status: pass
+    duration: 1s
+    discoverer_output: |
+    status: pass
+  - id: go_x_py_x_go
+    server: go
+    registrant: py
+    discoverer: go
+    status: pass
+    duration: 2s
+    discoverer_output: |
+    status: pass
+  - id: go_x_py_x_py
+    server: go
+    registrant: py
+    discoverer: py
+    status: pass
+    duration: 2s
+    discoverer_output: |
+    status: pass
+  - id: py_x_go_x_go
+    server: py
+    registrant: go
+    discoverer: go
+    status: pass
+    duration: 1s
+    discoverer_output: |
+    status: pass
+  - id: py_x_go_x_py
+    server: py
+    registrant: go
+    discoverer: py
+    status: pass
+    duration: 2s
+    discoverer_output: |
+    status: pass
+  - id: py_x_py_x_go
+    server: py
+    registrant: py
+    discoverer: go
+    status: pass
+    duration: 2s
+    discoverer_output: |
+    status: pass
+  - id: py_x_py_x_py
+    server: py
+    registrant: py
+    discoverer: py
+    status: pass
+    duration: 2s
+    discoverer_output: |
+    status: pass
