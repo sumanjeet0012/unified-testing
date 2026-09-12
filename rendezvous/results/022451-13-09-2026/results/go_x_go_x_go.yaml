@@ -1,9 +1,0 @@
-test: go_x_go_x_go
-server: go
-registrant: go
-discoverer: go
-status: pass
-duration: 0s
-
-# Output from discoverer
-status: pass

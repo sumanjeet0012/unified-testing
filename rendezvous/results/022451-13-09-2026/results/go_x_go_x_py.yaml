@@ -1,9 +1,0 @@
-test: go_x_go_x_py
-server: go
-registrant: go
-discoverer: py
-status: pass
-duration: 1s
-
-# Output from discoverer
-status: pass
