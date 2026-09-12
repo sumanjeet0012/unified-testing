@@ -1,0 +1,9 @@
+test: go_x_py_x_py
+server: go
+registrant: py
+discoverer: py
+status: pass
+duration: 2s
+
+# Output from discoverer
+status: pass

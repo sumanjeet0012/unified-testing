@@ -1,0 +1,81 @@
+tests:
+  - id: go_x_go_x_go
+    server:
+      id: go
+      imageName: rendezvous-go
+    registrant:
+      id: go
+      imageName: rendezvous-go
+    discoverer:
+      id: go
+      imageName: rendezvous-go
+  - id: go_x_go_x_py
+    server:
+      id: go
+      imageName: rendezvous-go
+    registrant:
+      id: go
+      imageName: rendezvous-go
+    discoverer:
+      id: py
+      imageName: rendezvous-py
+  - id: go_x_py_x_go
+    server:
+      id: go
+      imageName: rendezvous-go
+    registrant:
+      id: py
+      imageName: rendezvous-py
+    discoverer:
+      id: go
+      imageName: rendezvous-go
+  - id: go_x_py_x_py
+    server:
+      id: go
+      imageName: rendezvous-go
+    registrant:
+      id: py
+      imageName: rendezvous-py
+    discoverer:
+      id: py
+      imageName: rendezvous-py
+  - id: py_x_go_x_go
+    server:
+      id: py
+      imageName: rendezvous-py
+    registrant:
+      id: go
+      imageName: rendezvous-go
+    discoverer:
+      id: go
+      imageName: rendezvous-go
+  - id: py_x_go_x_py
+    server:
+      id: py
+      imageName: rendezvous-py
+    registrant:
+      id: go
+      imageName: rendezvous-go
+    discoverer:
+      id: py
+      imageName: rendezvous-py
+  - id: py_x_py_x_go
+    server:
+      id: py
+      imageName: rendezvous-py
+    registrant:
+      id: py
+      imageName: rendezvous-py
+    discoverer:
+      id: go
+      imageName: rendezvous-go
+  - id: py_x_py_x_py
+    server:
+      id: py
+      imageName: rendezvous-py
+    registrant:
+      id: py
+      imageName: rendezvous-py
+    discoverer:
+      id: py
+      imageName: rendezvous-py
