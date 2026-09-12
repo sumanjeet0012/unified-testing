@@ -120,8 +120,14 @@ func runRegistrant(ctx context.Context, h host.Host, r *redis.Client, testKey st
 	}
 	fmt.Printf("Registered in namespace %q with TTL %v\n", ns, grantedTTL)
 
-	_ = r.Set(ctx, fmt.Sprintf("%s_registrant_id", testKey), h.ID().String(), 0).Err()
-	_ = r.Set(ctx, fmt.Sprintf("%s_registrant_done", testKey), "1", 0).Err()
+	if err := r.Set(ctx, fmt.Sprintf("%s_registrant_id", testKey), h.ID().String(), 0).Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to write registrant_id to redis: %v\n", err)
+		os.Exit(1)
+	}
+	if err := r.Set(ctx, fmt.Sprintf("%s_registrant_done", testKey), "1", 0).Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to write registrant_done to redis: %v\n", err)
+		os.Exit(1)
+	}
 
 	fmt.Println("Registrant waiting for discoverer...")
 	sigCh := make(chan os.Signal, 1)
@@ -133,20 +139,37 @@ func runDiscoverer(ctx context.Context, h host.Host, r *redis.Client, testKey st
 	serverKey := fmt.Sprintf("%s_server_addr", testKey)
 	regDoneKey := fmt.Sprintf("%s_registrant_done", testKey)
 
-	// wait for both server and registrant to be ready
-	deadline := time.Now().Add(60 * time.Second)
+	// wait for both server and registrant to be ready (context-aware: a
+	// cancelled parent context aborts the wait instead of sleeping through it)
+	waitCtx, cancel := context.WithTimeout(ctx, 60*time.Second)
+	defer cancel()
+	ticker := time.NewTicker(500 * time.Millisecond)
+	defer ticker.Stop()
 	var serverAddr, regDone string
-	for time.Now().Before(deadline) {
+waitLoop:
+	for serverAddr == "" || regDone == "" {
 		if serverAddr == "" {
-			serverAddr, _ = redisGet(ctx, r, serverKey)
+			if val, err := redisGet(waitCtx, r, serverKey); err == nil {
+				serverAddr = val
+			} else if waitCtx.Err() == nil {
+				fmt.Fprintf(os.Stderr, "warning: redis GET %q failed: %v\n", serverKey, err)
+			}
 		}
 		if regDone == "" {
-			regDone, _ = redisGet(ctx, r, regDoneKey)
+			if val, err := redisGet(waitCtx, r, regDoneKey); err == nil {
+				regDone = val
+			} else if waitCtx.Err() == nil {
+				fmt.Fprintf(os.Stderr, "warning: redis GET %q failed: %v\n", regDoneKey, err)
+			}
 		}
 		if serverAddr != "" && regDone != "" {
 			break
 		}
-		time.Sleep(500 * time.Millisecond)
+		select {
+		case <-waitCtx.Done():
+			break waitLoop
+		case <-ticker.C:
+		}
 	}
 	if serverAddr == "" || regDone == "" {
 		fmt.Println("error: Timeout waiting for server and registrant")
@@ -239,15 +262,22 @@ func redisGet(ctx context.Context, r *redis.Client, key string) (string, error) 
 }
 
 func waitForKey(ctx context.Context, r *redis.Client, key string, timeout time.Duration) string {
-	deadline := time.Now().Add(timeout)
-	for time.Now().Before(deadline) {
-		val, _ := redisGet(ctx, r, key)
-		if val != "" {
+	waitCtx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+	ticker := time.NewTicker(500 * time.Millisecond)
+	defer ticker.Stop()
+	for {
+		if val, err := redisGet(waitCtx, r, key); err == nil && val != "" {
 			return val
+		} else if err != nil && waitCtx.Err() == nil {
+			fmt.Fprintf(os.Stderr, "warning: redis GET %q failed: %v\n", key, err)
 		}
-		time.Sleep(500 * time.Millisecond)
+		select {
+		case <-waitCtx.Done():
+			return ""
+		case <-ticker.C:
+		}
 	}
-	return ""
 }
 
 func mustAddrInfo(addrStr string) *peer.AddrInfo {

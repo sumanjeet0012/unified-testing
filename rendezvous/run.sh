@@ -260,12 +260,12 @@ build_rendezvous_images "${FORCE_IMAGE_REBUILD}" "${BUILD_FILTER}"
 
 print_header "Starting global Redis..."
 indent
-docker rm -f transport-redis 2>/dev/null || true
-docker network create transport-network 2>/dev/null || true
-docker run -d --name transport-redis --network transport-network --rm redis:7-alpine >/dev/null
+docker rm -f rendezvous-redis 2>/dev/null || true
+docker network create rendezvous-network 2>/dev/null || true
+docker run -d --name rendezvous-redis --network rendezvous-network --rm redis:7-alpine >/dev/null
 unindent
 
-trap 'docker stop transport-redis 2>/dev/null || true' EXIT
+trap 'docker stop rendezvous-redis 2>/dev/null || true' EXIT
 
 TEST_COUNT=$(yq eval '.tests | length' "${TEST_PASS_DIR}/test-matrix.yaml")
 RESULTS_FILE="${TEST_PASS_DIR}/results.yaml.tmp"

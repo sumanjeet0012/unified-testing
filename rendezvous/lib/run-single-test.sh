@@ -35,7 +35,7 @@ name: ${COMPOSE_PROJECT_NAME}
 
 networks:
   default:
-    name: transport-network
+    name: rendezvous-network
     external: true
 
 services:
@@ -45,7 +45,7 @@ services:
     init: true
     environment:
       - ROLE=server
-      - REDIS_ADDR=transport-redis:6379
+      - REDIS_ADDR=rendezvous-redis:6379
       - TEST_KEY=${TEST_KEY}
 
   registrant:
@@ -56,7 +56,7 @@ services:
       - server
     environment:
       - ROLE=registrant
-      - REDIS_ADDR=transport-redis:6379
+      - REDIS_ADDR=rendezvous-redis:6379
       - TEST_KEY=${TEST_KEY}
 
   discoverer:
@@ -68,7 +68,7 @@ services:
       - registrant
     environment:
       - ROLE=discoverer
-      - REDIS_ADDR=transport-redis:6379
+      - REDIS_ADDR=rendezvous-redis:6379
       - TEST_KEY=${TEST_KEY}
 COMPOSE
 
@@ -119,4 +119,8 @@ cat >> "${RESULTS_FILE}" <<RESULT
 ${INDENTED_YAML}
 RESULT
 
-exit ${EXIT_CODE}
+if [ "${FINAL_STATUS}" = "pass" ]; then
+    exit 0
+else
+    exit 1
+fi

@@ -36,8 +36,10 @@ def _create_register_message_strip_p2p(namespace, peer_id, addrs, ttl):
             p2p_val = addr.value_for_protocol("p2p")
             if p2p_val:
                 addr = addr.decapsulate(Multiaddr(f"/p2p/{p2p_val}"))
-        except (ProtocolLookupError, Exception):
+        except ProtocolLookupError:
             pass
+        except Exception as exc:
+            logger.warning("Unexpected error stripping /p2p suffix from %s: %s", addr, exc)
         cleaned.append(addr)
     return _orig_create_register_message(namespace, peer_id, cleaned, ttl)
 
@@ -155,7 +157,7 @@ async def main() -> None:
                 logger.error(f"Test Failed: Expected registrant peer {expected_id} not found in discovery")
                 print(f"error: Registrant peer {expected_id} not found in discovery", flush=True)
                 print("status: fail", flush=True)
-                os._exit(1)
+                sys.exit(1)
 
             # Dial target peer on PingProto
             try:
@@ -168,20 +170,20 @@ async def main() -> None:
                     if resp == b"pong":
                         logger.info("Discoverer successfully pinged registrant peer!")
                         print("status: pass", flush=True)
-                        os._exit(0)
+                        sys.exit(0)
                     else:
                         logger.error(f"Test Failed: Unexpected ping response: {resp}")
                         print(f"error: Unexpected ping response: {resp}", flush=True)
                         print("status: fail", flush=True)
-                        os._exit(1)
+                        sys.exit(1)
             except Exception as e:
                 logger.error(f"Test Failed: Dial to registrant peer failed: {e}")
                 print(f"error: Dial to registrant peer failed: {e}", flush=True)
                 print("status: fail", flush=True)
-                os._exit(1)
+                sys.exit(1)
         else:
             logger.error(f"Unknown role: {role}")
-            os._exit(1)
+            sys.exit(1)
 
 if __name__ == "__main__":
     trio.run(main)
