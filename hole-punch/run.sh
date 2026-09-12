@@ -118,6 +118,9 @@ source "${SCRIPT_LIB_DIR}/lib-snapshot-creation.sh"
 source "${SCRIPT_LIB_DIR}/lib-snapshot-images.sh"
 source "${SCRIPT_LIB_DIR}/lib-test-caching.sh"
 source "${SCRIPT_LIB_DIR}/lib-test-execution.sh"
+# Hole-punch-only Docker registry layer cache (shadows `docker build`);
+# no other suite sources this file.
+source "${TEST_ROOT}/lib/docker-cache.sh"
 source "${SCRIPT_LIB_DIR}/lib-test-filtering.sh"
 source "${SCRIPT_LIB_DIR}/lib-test-images.sh"
 

@@ -54,6 +54,10 @@ inputs:
     description: "Enable debug mode (sets DEBUG=true in test containers)"
     required: false
     default: "false"
+  docker-cache-push:
+    description: "Push refreshed Docker layer cache to GHCR after builds (master/daily only; fork PRs use read-only tokens so this is a no-op there)"
+    required: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -62,9 +66,22 @@ runs:
       shell: bash
       run: docker compose version
 
+    - name: Log in to GHCR for layer cache (best-effort)
+      shell: bash
+      run: |
+        echo "${{ github.token }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin 2>/dev/null \
+          && echo "→ GHCR login ok (layer cache reads enabled)" \
+          || echo "::warning::GHCR login failed; image builds will run cold"
+
     - name: Run hole punch interop tests
       shell: bash
       working-directory: hole-punch
+      env:
+        DOCKER_CACHE_ENABLED: 'true'
+        # Push refreshed cache on schedule (daily/master, writable token) or
+        # when explicitly requested; fork PRs use read-only tokens so the
+        # push path inside the scripts safely no-ops there.
+        DOCKER_CACHE_PUSH: ${{ inputs.docker-cache-push == 'true' || github.event_name == 'schedule' }}
       run: |
         set -uo pipefail
 
