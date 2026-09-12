@@ -55,7 +55,7 @@ def setup_ping_handler(host):
         await stream.close()
     host.set_stream_handler(PING_PROTO, handle_ping)
 
-async def main() -> None:
+async def main() -> int:
     role = os.environ.get("ROLE")
     redis_addr = os.environ.get("REDIS_ADDR")
     test_key = os.environ.get("TEST_KEY")
@@ -157,7 +157,7 @@ async def main() -> None:
                 logger.error(f"Test Failed: Expected registrant peer {expected_id} not found in discovery")
                 print(f"error: Registrant peer {expected_id} not found in discovery", flush=True)
                 print("status: fail", flush=True)
-                sys.exit(1)
+                return 1
 
             # Dial target peer on PingProto
             try:
@@ -170,20 +170,20 @@ async def main() -> None:
                     if resp == b"pong":
                         logger.info("Discoverer successfully pinged registrant peer!")
                         print("status: pass", flush=True)
-                        sys.exit(0)
+                        return 0
                     else:
                         logger.error(f"Test Failed: Unexpected ping response: {resp}")
                         print(f"error: Unexpected ping response: {resp}", flush=True)
                         print("status: fail", flush=True)
-                        sys.exit(1)
+                        return 1
             except Exception as e:
                 logger.error(f"Test Failed: Dial to registrant peer failed: {e}")
                 print(f"error: Dial to registrant peer failed: {e}", flush=True)
                 print("status: fail", flush=True)
-                sys.exit(1)
+                return 1
         else:
             logger.error(f"Unknown role: {role}")
-            sys.exit(1)
+            return 1
 
 if __name__ == "__main__":
-    trio.run(main)
+    sys.exit(trio.run(main))
