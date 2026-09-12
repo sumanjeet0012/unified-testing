@@ -33,6 +33,7 @@ import (
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/p2p/protocol/circuitv2/client"
+	relayv2 "github.com/libp2p/go-libp2p/p2p/protocol/circuitv2/relay"
 	"github.com/libp2p/go-libp2p/p2p/protocol/holepunch"
 	holepunchpb "github.com/libp2p/go-libp2p/p2p/protocol/holepunch/pb"
 	idpb "github.com/libp2p/go-libp2p/p2p/protocol/identify/pb"
@@ -103,6 +104,47 @@ func peerMultiaddr(h host.Host) string {
 		return fmt.Sprintf("%s/p2p/%s", a.String(), h.ID().String())
 	}
 	return ""
+}
+
+// runRelayMode serves as a circuit relay v2 hop relay: listen on RELAY_IP,
+// accept reservations with generous limits, publish the multiaddr, serve.
+func runRelayMode() {
+	redisAddr := getEnv("REDIS_ADDR")
+	testKey := getEnv("TEST_KEY")
+	relayIP := getEnv("RELAY_IP")
+
+	ctx := context.Background()
+	r := redis.NewClient(&redis.Options{Addr: redisAddr})
+	defer r.Close()
+
+	listenAddr, _ := ma.NewMultiaddr(fmt.Sprintf("/ip4/%s/tcp/0", relayIP))
+	h, err := libp2p.New(libp2p.ListenAddrs(listenAddr))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create relay host: %v\n", err)
+		os.Exit(1)
+	}
+	defer h.Close()
+
+	res := relayv2.DefaultResources()
+	res.MaxReservations = 100
+	res.MaxCircuits = 100
+	relaySvc, err := relayv2.New(h, relayv2.WithResources(res))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to start relay service: %v\n", err)
+		os.Exit(1)
+	}
+	defer relaySvc.Close()
+
+	relayMA := peerMultiaddr(h)
+	if err := r.Set(ctx, fmt.Sprintf("%s_relay_multiaddr", testKey), relayMA, 0).Err(); err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to publish relay multiaddr: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("Relay ready at %s\n", relayMA)
+
+	sigCh := make(chan os.Signal, 1)
+	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
+	<-sigCh
 }
 
 func hasDirectConn(h host.Host, p peer.ID) bool {
@@ -516,6 +558,12 @@ func runDialer(ctx context.Context, h host.Host, relayInfo *peer.AddrInfo, r *re
 }
 
 func main() {
+	// Relay mode: the harness compose for relays sets RELAY_IP and no
+	// IS_DIALER (see run-relay.sh).
+	if os.Getenv("IS_DIALER") == "" && os.Getenv("RELAY_IP") != "" {
+		runRelayMode()
+		return
+	}
 	isDialer := os.Getenv("IS_DIALER") == "true"
 	redisAddr := getEnv("REDIS_ADDR")
 	testKey := getEnv("TEST_KEY")
