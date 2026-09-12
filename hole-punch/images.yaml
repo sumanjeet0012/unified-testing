@@ -9,7 +9,7 @@ test-aliases:
   - alias: "python"
     value: "py-v0.7.0"
   - alias: "go"
-    value: "go-v0.34"
+    value: "go-v0.49"
   - alias: "failing"
     # Known-broken: nim-libp2p advertises the relay's own address as its
     # DCUtR ObsAddr (captured on the wire), so no peer can dial it back.
@@ -44,7 +44,7 @@ relays:
     secureChannels: [noise]
     muxers: [yamux]
 
-  - id: go-v0.34
+  - id: go-v0.49
     source:
       type: local
       path: images/go
@@ -83,7 +83,7 @@ implementations:
     secureChannels: [noise]
     muxers: [yamux]
 
-  - id: go-v0.34
+  - id: go-v0.49
     source:
       type: local
       path: images/go
