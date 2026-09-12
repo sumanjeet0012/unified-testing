@@ -374,6 +374,7 @@ jobs:
           force-matrix-rebuild: ${{ needs.resolve-hole-punch-parameters.outputs.force-matrix-rebuild }}
           force-image-rebuild: ${{ needs.resolve-hole-punch-parameters.outputs.force-image-rebuild }}
           debug: ${{ needs.resolve-hole-punch-parameters.outputs.debug }}
+          docker-cache-push: 'true'
 
   run-perf-full:
     needs: resolve-perf-parameters
