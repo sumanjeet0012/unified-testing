@@ -125,25 +125,19 @@ jobs:
             echo "should-run-tests=true" >> $GITHUB_OUTPUT
             echo "→ Manual trigger: using workflow inputs"
           else
-            # Automatic trigger - use change detection outputs
-            echo "test-select=${{ steps.detect.outputs.changed-impls }}" >> $GITHUB_OUTPUT
+            # Automatic trigger: always run the FULL matrix. Change-scoped
+            # selects are unsound for interop (a new peer must be tested
+            # against every existing relay/router/peer, not just changed
+            # ones), so select everything except known-broken.
+            echo "test-select=" >> $GITHUB_OUTPUT
 
             # Always include ~failing to skip known-broken tests.
-            # Do NOT add negated implementation patterns to test-ignore here -
-            # that conflicts with test-select and can result in 0 selected tests.
             echo "test-ignore=~failing" >> $GITHUB_OUTPUT
 
-            echo "relay-select=${{ steps.detect.outputs.changed-relays }}" >> $GITHUB_OUTPUT
-
-            # Do NOT negate changed relays here: relay-select already limits
-            # to them, and `!a|!b` expands (union) to ignore-everything.
-            # Always include ~failing to skip known-broken relays
+            echo "relay-select=" >> $GITHUB_OUTPUT
             echo "relay-ignore=~failing" >> $GITHUB_OUTPUT
 
-            echo "router-select=${{ steps.detect.outputs.changed-routers }}" >> $GITHUB_OUTPUT
-
-            # Same as relays: router-select already limits; negations would
-            # union to ignore-everything. Always include ~failing.
+            echo "router-select=" >> $GITHUB_OUTPUT
             echo "router-ignore=~failing" >> $GITHUB_OUTPUT
 
             echo "transport-ignore=ws|webrtc-direct" >> $GITHUB_OUTPUT

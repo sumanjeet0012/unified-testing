@@ -11,7 +11,10 @@ test-aliases:
   - alias: "go"
     value: "go-v0.34"
   - alias: "failing"
-    value: ""
+    # Known-broken: nim-libp2p advertises the relay's own address as its
+    # DCUtR ObsAddr (captured on the wire), so no peer can dial it back.
+    # Re-enable once nim reports dialable observed addresses.
+    value: "nim-v2.2 x py-v0.7.0|py-v0.7.0 x nim-v2.2"
 
 # Router configurations - Multiple router types for testing different NAT implementations
 routers:
