@@ -1,0 +1,29 @@
+tests:
+  - id: go_x_go
+    server:
+      id: go
+      imageName: autonat-go
+    client:
+      id: go
+      imageName: autonat-go
+  - id: go_x_py
+    server:
+      id: go
+      imageName: autonat-go
+    client:
+      id: py
+      imageName: autonat-py
+  - id: py_x_go
+    server:
+      id: py
+      imageName: autonat-py
+    client:
+      id: go
+      imageName: autonat-go
+  - id: py_x_py
+    server:
+      id: py
+      imageName: autonat-py
+    client:
+      id: py
+      imageName: autonat-py

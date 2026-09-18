@@ -1,0 +1,27 @@
+name: an_py_x_go
+
+networks:
+  default:
+    name: transport-network
+    external: true
+
+services:
+  server:
+    image: "autonat-py"
+    container_name: an_py_x_go_server
+    init: true
+    environment:
+      - ROLE=server
+      - REDIS_ADDR=transport-redis:6379
+      - TEST_KEY=41313d64
+
+  client:
+    image: "autonat-go"
+    container_name: an_py_x_go_client
+    init: true
+    depends_on:
+      - server
+    environment:
+      - ROLE=client
+      - REDIS_ADDR=transport-redis:6379
+      - TEST_KEY=41313d64

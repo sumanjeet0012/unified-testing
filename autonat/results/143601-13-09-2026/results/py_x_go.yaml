@@ -1,0 +1,9 @@
+test: py_x_go
+server: py
+client: go
+status: pass
+duration: 1s
+
+# Output from client
+verdict: 0
+status: pass

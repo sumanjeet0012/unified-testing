@@ -1,0 +1,9 @@
+test: go_x_go
+server: go
+client: go
+status: pass
+duration: 0s
+
+# Output from client
+verdict: 0
+status: pass

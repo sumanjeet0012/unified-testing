@@ -1,0 +1,30 @@
+ Container an_py_x_py_server Creating 
+ Container an_py_x_py_server Created 
+ Container an_py_x_py_client Creating 
+ Container an_py_x_py_client Created 
+Attaching to an_py_x_py_client, an_py_x_py_server
+ Container an_py_x_py_server Starting 
+ Container an_py_x_py_server Started 
+ Container an_py_x_py_client Starting 
+ Container an_py_x_py_client Started 
+an_py_x_py_server  | 2026-09-13 09:06:04,805 INFO: AutoNAT server ready at /ip4/172.18.0.3/tcp/38153/p2p/12D3KooWN9wKbwWHNx93CiMpuYpwNSm6T4NinLA2qGrPiZEoxSSV
+an_py_x_py_client  | 2026-09-13 09:06:05,135 INFO: Connected to AutoNAT server 12D3KooWN9wKbwWHNx93CiMpuYpwNSm6T4NinLA2qGrPiZEoxSSV
+an_py_x_py_client  | verdict: 0
+an_py_x_py_client  | 2026-09-13 09:06:05,140 INFO: Server verdict: status=0 addr=b'\x04\xac\x12\x00\x04\x06\x85\x03\xa5\x03&\x00$\x08\x01\x12 \xbbp\xc3\xd0\xc0\xfbf\x9e\x97\x95\x8e)\x99V\xa1\xeb\x83\x1e)\xd3\x93\x1bol\xe7";\xd2\x9d\x04\x0c\xbe'
+an_py_x_py_client  | 2026-09-13 09:06:05,140 INFO: AutoNAT dial-back succeeded: node is reachable
+an_py_x_py_client  | status: pass
+[Kan_py_x_py_client exited with code 0
+ Compose Stopping Aborting on container exit...
+ Container an_py_x_py_client Stopping 
+ Container an_py_x_py_client Stopped 
+ Container an_py_x_py_server Stopping 
+ Container an_py_x_py_server Stopped 
+[Kan_py_x_py_server exited with code 143
+ Container an_py_x_py_client Stopping 
+ Container an_py_x_py_client Stopped 
+ Container an_py_x_py_client Removing 
+ Container an_py_x_py_client Removed 
+ Container an_py_x_py_server Stopping 
+ Container an_py_x_py_server Stopped 
+ Container an_py_x_py_server Removing 
+ Container an_py_x_py_server Removed 

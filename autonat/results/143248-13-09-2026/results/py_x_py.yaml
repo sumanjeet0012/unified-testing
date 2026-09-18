@@ -1,0 +1,8 @@
+test: py_x_py
+server: py
+client: py
+status: fail
+duration: 1s
+
+# Output from client
+error: Exceptions from Trio nursery (1 sub-exception)
