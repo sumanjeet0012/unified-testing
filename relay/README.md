@@ -19,7 +19,7 @@ The goal is to verify relay interop across language stacks on the full relay →
 **Current implementations** (see [`images.yaml`](images.yaml)):
 
 - **go** — go-libp2p v0.34.1 (`relay-go`)
-- **py** — py-libp2p from `sumanjeet0012/py-libp2p@fix/relay-v2-spec-compliance` (`relay-py`; tracks the branch because the PyPI release predates the circuit-relay v2 spec fixes — re-pin on upstream merge)
+- **py** — py-libp2p from `libp2p/py-libp2p@main` (`relay-py`)
 
 ## Test Naming
 
