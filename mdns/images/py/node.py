@@ -11,6 +11,7 @@ from libp2p import new_host
 from libp2p.custom_types import TProtocol
 from libp2p.discovery.events.peerDiscovery import peerDiscovery
 from libp2p.peer.id import ID as PeerID
+from libp2p.peer.peerinfo import PeerInfo
 
 logging.basicConfig(
     level=logging.INFO,
@@ -52,6 +53,33 @@ async def main() -> int:
 
     container_ip = await trio.to_thread.run_sync(get_container_ip)
 
+    # NOTE: the discovery handler MUST be registered before the host starts.
+    # PeerListener emits `peer_discovered` only on the first sighting of a
+    # service (add_service); later sightings go through update_service, which
+    # refreshes the peerstore but does NOT re-emit. Registering after the
+    # redis wait below loses the one-shot emit whenever discovery wins the
+    # race, and the test then times out even though the peer is known.
+    # The peerstore is populated on every sighting regardless of handlers,
+    # so it is used as a fallback below.
+    discovered: list = []
+    expected_holder: list = []
+
+    def on_discovered(peer_info):
+        try:
+            if expected_holder and peer_info.peer_id.to_string() == expected_holder[0]:
+                discovered.append(peer_info)
+                logger.info(f"mDNS discovered expected peer {expected_holder[0]}")
+        except Exception:
+            pass
+
+    peerDiscovery.register_peer_discovered_handler(on_discovered)
+    try:
+        return await _run_node(role, test_key, r, container_ip, discovered, expected_holder)
+    finally:
+        peerDiscovery.unregister_peer_discovered_handler(on_discovered)
+
+
+async def _run_node(role, test_key, r, container_ip, discovered, expected_holder) -> int:
     # mDNS is enabled on both roles: advertiser broadcasts, discoverer listens.
     # host.run() starts the MDNSDiscovery service automatically.
     host = new_host(enable_mDNS=True)
@@ -86,31 +114,55 @@ async def main() -> int:
                     if not advertiser_id:
                         await trio.sleep(0.5)
             logger.info(f"Expecting mDNS advertisement from {advertiser_id}")
+            expected_holder.append(advertiser_id)
 
-            discovered: list = []
-
-            def on_discovered(peer_info):
-                try:
-                    if peer_info.peer_id.to_string() == advertiser_id:
-                        discovered.append(peer_info)
-                        logger.info(f"mDNS discovered expected peer {advertiser_id}")
-                except Exception:
-                    pass
-
-            peerDiscovery.register_peer_discovered_handler(on_discovered)
+            target = None
+            # Fast path: the peer may already be in the peerstore (the emit
+            # fired before we knew which ID to expect). The listener populates
+            # the peerstore on every sighting, independent of handlers.
             try:
-                with trio.fail_after(60.0):
-                    while not discovered:
-                        await trio.sleep(0.5)
-            except trio.TooSlowError:
+                pid = PeerID.from_string(advertiser_id)
+                known_addrs = host.get_peerstore().addrs(pid)
+                if known_addrs:
+                    target = PeerInfo(pid, known_addrs)
+                    logger.info(f"Advertiser already in peerstore: {known_addrs}")
+            except Exception as e:
+                logger.debug(f"Peerstore fast-path miss: {e}")
+
+            if target is None:
+                try:
+                    with trio.fail_after(60.0):
+                        while not discovered:
+                            # Re-check peerstore each tick: update_service
+                            # refreshes it without re-emitting.
+                            try:
+                                pid = PeerID.from_string(advertiser_id)
+                                known_addrs = host.get_peerstore().addrs(pid)
+                                if known_addrs:
+                                    target = PeerInfo(pid, known_addrs)
+                                    logger.info(
+                                        f"Advertiser found via peerstore: {known_addrs}"
+                                    )
+                                    break
+                            except Exception:
+                                pass
+                            await trio.sleep(0.5)
+                        else:
+                            target = discovered[0]
+                except trio.TooSlowError:
+                    logger.error("Test Failed: Timeout waiting for mDNS discovery")
+                    print("error: Timeout waiting for mDNS discovery", flush=True)
+                    print("status: fail", flush=True)
+                    return 1
+                if target is None and discovered:
+                    target = discovered[0]
+
+            if target is None:
                 logger.error("Test Failed: Timeout waiting for mDNS discovery")
                 print("error: Timeout waiting for mDNS discovery", flush=True)
                 print("status: fail", flush=True)
                 return 1
-            finally:
-                peerDiscovery.unregister_peer_discovered_handler(on_discovered)
 
-            target = discovered[0]
             logger.info(f"Discovered peer addrs: {target.addrs}")
 
             try:
