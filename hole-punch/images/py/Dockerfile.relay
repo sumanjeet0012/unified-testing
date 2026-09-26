@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential libgmp-dev iproute2 git && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir \
-        "git+https://github.com/libp2p/py-libp2p.git@main" \
+        "libp2p==0.8.0" \
         redis multiaddr
 
 COPY relay.py run-relay.sh ./
