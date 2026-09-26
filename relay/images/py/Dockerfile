@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --no-cache-dir \
-        "git+https://github.com/libp2p/py-libp2p.git@main" \
+        "libp2p==0.8.0" \
         redis multiaddr
 
 COPY node.py .
